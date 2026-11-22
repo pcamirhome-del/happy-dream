@@ -1,0 +1,235 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    function isValidFarmerCode(code) {
+      return code is string && code.size() >= 3 && code.size() <= 24 && code.matches('^[A-Z0-9\\-]+$');
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isVerified() { return isSignedIn() && request.auth.token.email_verified == true; }
+
+    function isValidFarmer(data) {
+      return data.keys().hasAll(['uid', 'farmerCode', 'farmName', 'avatar', 'country', 'gender', 'level', 'coopPoints', 'updatedAt'])
+        && data.keys().hasOnly(['uid', 'farmerCode', 'farmName', 'avatar', 'country', 'gender', 'level', 'coopPoints', 'updatedAt'])
+        && isValidId(data.uid)
+        && isValidFarmerCode(data.farmerCode)
+        && data.farmName is string && data.farmName.size() >= 1 && data.farmName.size() <= 32
+        && data.avatar is string && data.avatar.size() >= 1 && data.avatar.size() <= 12
+        && data.country is string && data.country.size() >= 1 && data.country.size() <= 40
+        && data.gender in ['male', 'female']
+        && data.level is number && data.level >= 1 && data.level <= 999
+        && data.coopPoints is number && data.coopPoints >= 0 && data.coopPoints <= 10000000
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidFarmerCodeDoc(data) {
+      return data.keys().hasAll(['uid', 'farmerCode', 'farmName', 'avatar', 'updatedAt'])
+        && data.keys().hasOnly(['uid', 'farmerCode', 'farmName', 'avatar', 'updatedAt'])
+        && isValidId(data.uid)
+        && isValidFarmerCode(data.farmerCode)
+        && data.farmName is string && data.farmName.size() >= 1 && data.farmName.size() <= 32
+        && data.avatar is string && data.avatar.size() >= 1 && data.avatar.size() <= 12
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidFriendRequest(data) {
+      return data.keys().hasAll([
+          'fromUid', 'toUid', 'fromFarmerCode', 'fromFarmName', 'fromAvatar',
+          'fromCountry', 'fromGender', 'fromLevel', 'toFarmerCode', 'toFarmName',
+          'toAvatar', 'status', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'fromUid', 'toUid', 'fromFarmerCode', 'fromFarmName', 'fromAvatar',
+          'fromCountry', 'fromGender', 'fromLevel', 'toFarmerCode', 'toFarmName',
+          'toAvatar', 'status', 'createdAt', 'updatedAt'
+        ])
+        && isValidId(data.fromUid)
+        && isValidId(data.toUid)
+        && isValidFarmerCode(data.fromFarmerCode)
+        && isValidFarmerCode(data.toFarmerCode)
+        && data.fromFarmName is string && data.fromFarmName.size() >= 1 && data.fromFarmName.size() <= 32
+        && data.toFarmName is string && data.toFarmName.size() >= 1 && data.toFarmName.size() <= 32
+        && data.fromAvatar is string && data.fromAvatar.size() >= 1 && data.fromAvatar.size() <= 12
+        && data.toAvatar is string && data.toAvatar.size() >= 1 && data.toAvatar.size() <= 12
+        && data.fromCountry is string && data.fromCountry.size() >= 1 && data.fromCountry.size() <= 40
+        && data.fromGender in ['male', 'female']
+        && data.fromLevel is number && data.fromLevel >= 1 && data.fromLevel <= 999
+        && data.status in ['pending', 'accepted', 'rejected']
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidCropGift(data) {
+      return data.keys().hasAll([
+          'fromUid', 'toUid', 'fromFarmerCode', 'fromFarmName', 'fromAvatar',
+          'cropId', 'cropName', 'qty', 'status', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'fromUid', 'toUid', 'fromFarmerCode', 'fromFarmName', 'fromAvatar',
+          'cropId', 'cropName', 'qty', 'status', 'createdAt', 'updatedAt'
+        ])
+        && isValidId(data.fromUid)
+        && isValidId(data.toUid)
+        && isValidFarmerCode(data.fromFarmerCode)
+        && data.fromFarmName is string && data.fromFarmName.size() >= 1 && data.fromFarmName.size() <= 32
+        && data.fromAvatar is string && data.fromAvatar.size() >= 1 && data.fromAvatar.size() <= 12
+        && data.cropId is string && data.cropId.size() >= 1 && data.cropId.size() <= 32 && data.cropId.matches('^[a-zA-Z0-9_]+$')
+        && data.cropName is string && data.cropName.size() >= 1 && data.cropName.size() <= 40
+        && data.qty is number && data.qty >= 1 && data.qty <= 20
+        && data.status in ['sent', 'claimed']
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidFarmCloudSave(data) {
+      return data.keys().hasAll(['ownerId', 'farmerCode', 'farmName', 'level', 'coins', 'dinars', 'unlockedSize', 'unlockedCrops', 'barn', 'updatedAt'])
+        && data.keys().hasOnly(['ownerId', 'farmerCode', 'farmName', 'level', 'coins', 'dinars', 'unlockedSize', 'unlockedCrops', 'barn', 'updatedAt'])
+        && isValidId(data.ownerId)
+        && isValidFarmerCode(data.farmerCode)
+        && data.farmName is string && data.farmName.size() >= 1 && data.farmName.size() <= 32
+        && data.level is number && data.level >= 1 && data.level <= 999
+        && data.coins is number && data.coins >= 0
+        && data.dinars is number && data.dinars >= 0
+        && data.unlockedSize is number && data.unlockedSize >= 6 && data.unlockedSize <= 16
+        && data.unlockedCrops is list && data.unlockedCrops.size() <= 60
+        && (data.unlockedCrops.size() == 0 || data.unlockedCrops[0] is string)
+        && data.barn is map && data.barn.size() <= 80
+        && data.updatedAt is timestamp;
+    }
+
+    match /test/connection {
+      allow get: if isSignedIn();
+      allow list, write: if false;
+    }
+
+    match /farmers/{farmerId} {
+      allow get: if isSignedIn() && isValidId(farmerId);
+      allow list: if false;
+      allow create: if isVerified()
+        && isValidId(farmerId)
+        && farmerId == request.auth.uid
+        && isValidFarmer(incoming())
+        && incoming().uid == request.auth.uid
+        && incoming().updatedAt == request.time;
+      allow update: if isVerified()
+        && isValidId(farmerId)
+        && farmerId == request.auth.uid
+        && isValidFarmer(incoming())
+        && incoming().uid == existing().uid
+        && incoming().farmerCode == existing().farmerCode
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['farmName', 'avatar', 'country', 'gender', 'level', 'coopPoints', 'updatedAt']);
+      allow delete: if false;
+    }
+
+    match /farmerCodes/{farmerCode} {
+      allow get: if isSignedIn() && isValidFarmerCode(farmerCode);
+      allow list: if false;
+      allow create: if isVerified()
+        && isValidFarmerCode(farmerCode)
+        && isValidFarmerCodeDoc(incoming())
+        && incoming().uid == request.auth.uid
+        && incoming().farmerCode == farmerCode
+        && incoming().updatedAt == request.time;
+      allow update: if isVerified()
+        && isValidFarmerCode(farmerCode)
+        && isValidFarmerCodeDoc(incoming())
+        && existing().uid == request.auth.uid
+        && incoming().uid == existing().uid
+        && incoming().farmerCode == existing().farmerCode
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['farmName', 'avatar', 'updatedAt']);
+      allow delete: if false;
+    }
+
+    match /friendRequests/{requestId} {
+      allow get: if isSignedIn()
+        && isValidId(requestId)
+        && (existing().fromUid == request.auth.uid || existing().toUid == request.auth.uid);
+      allow list: if isSignedIn()
+        && (resource.data.fromUid == request.auth.uid || resource.data.toUid == request.auth.uid);
+      allow create: if isVerified()
+        && isValidId(requestId)
+        && isValidFriendRequest(incoming())
+        && incoming().fromUid == request.auth.uid
+        && incoming().toUid != request.auth.uid
+        && incoming().status == 'pending'
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time
+        && exists(/databases/$(database)/documents/farmers/$(incoming().toUid));
+      allow update: if isVerified()
+        && isValidId(requestId)
+        && isValidFriendRequest(incoming())
+        && existing().status == 'pending'
+        && existing().toUid == request.auth.uid
+        && incoming().fromUid == existing().fromUid
+        && incoming().toUid == existing().toUid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && (incoming().status == 'accepted' || incoming().status == 'rejected')
+        && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']);
+      allow delete: if isVerified()
+        && isValidId(requestId)
+        && (existing().fromUid == request.auth.uid || existing().toUid == request.auth.uid);
+    }
+
+    match /cropGifts/{giftId} {
+      allow get: if isSignedIn()
+        && isValidId(giftId)
+        && (existing().fromUid == request.auth.uid || existing().toUid == request.auth.uid);
+      allow list: if isSignedIn()
+        && (resource.data.toUid == request.auth.uid || resource.data.fromUid == request.auth.uid);
+      allow create: if isVerified()
+        && isValidId(giftId)
+        && isValidCropGift(incoming())
+        && incoming().fromUid == request.auth.uid
+        && incoming().toUid != request.auth.uid
+        && incoming().status == 'sent'
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time
+        && exists(/databases/$(database)/documents/farmers/$(incoming().toUid));
+      allow update: if isVerified()
+        && isValidId(giftId)
+        && isValidCropGift(incoming())
+        && existing().status == 'sent'
+        && existing().toUid == request.auth.uid
+        && incoming().status == 'claimed'
+        && incoming().fromUid == existing().fromUid
+        && incoming().toUid == existing().toUid
+        && incoming().cropId == existing().cropId
+        && incoming().qty == existing().qty
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']);
+      allow delete: if false;
+    }
+
+    match /users/{userId}/saves/{saveId} {
+      allow get: if isSignedIn() && isValidId(userId) && isValidId(saveId) && request.auth.uid == userId;
+      allow list: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isVerified()
+        && isValidId(userId)
+        && isValidId(saveId)
+        && request.auth.uid == userId
+        && isValidFarmCloudSave(incoming())
+        && incoming().ownerId == request.auth.uid
+        && incoming().updatedAt == request.time;
+      allow update: if isVerified()
+        && isValidId(userId)
+        && isValidId(saveId)
+        && request.auth.uid == userId
+        && isValidFarmCloudSave(incoming())
+        && incoming().ownerId == existing().ownerId
+        && incoming().updatedAt == request.time;
+      allow delete: if isVerified() && isValidId(userId) && isValidId(saveId) && request.auth.uid == userId;
+    }
+  }
+}

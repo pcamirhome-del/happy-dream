@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "FarmerProfile": {
+      "title": "FarmerProfile",
+      "description": "Public game profile card for a farmer (no PII stored).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "farmerCode": { "type": "string", "minLength": 3, "maxLength": 24, "pattern": "^[A-Z0-9\\-]+$" },
+        "farmName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "avatar": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "country": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "gender": { "type": "string", "enum": ["male", "female"] },
+        "level": { "type": "number" },
+        "coopPoints": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "farmerCode", "farmName", "avatar", "country", "gender", "level", "coopPoints", "updatedAt"]
+    },
+    "FarmerCodeDirectory": {
+      "title": "FarmerCodeDirectory",
+      "description": "Direct lookup index mapping Farmer ID code to UID.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "farmerCode": { "type": "string", "minLength": 3, "maxLength": 24, "pattern": "^[A-Z0-9\\-]+$" },
+        "farmName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "avatar": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "farmerCode", "farmName", "avatar", "updatedAt"]
+    },
+    "FriendRequest": {
+      "title": "FriendRequest",
+      "description": "Friend request or accepted friendship link between two farmers.",
+      "type": "object",
+      "properties": {
+        "fromUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "toUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fromFarmerCode": { "type": "string", "minLength": 3, "maxLength": 24, "pattern": "^[A-Z0-9\\-]+$" },
+        "fromFarmName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "fromAvatar": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "fromCountry": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "fromGender": { "type": "string", "enum": ["male", "female"] },
+        "fromLevel": { "type": "number" },
+        "toFarmerCode": { "type": "string", "minLength": 3, "maxLength": 24, "pattern": "^[A-Z0-9\\-]+$" },
+        "toFarmName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "toAvatar": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "fromUid", "toUid", "fromFarmerCode", "fromFarmName", "fromAvatar",
+        "fromCountry", "fromGender", "fromLevel", "toFarmerCode", "toFarmName",
+        "toAvatar", "status", "createdAt", "updatedAt"
+      ]
+    },
+    "CropGift": {
+      "title": "CropGift",
+      "description": "Agricultural crop gift sent from a farmer's barn to an accepted friend.",
+      "type": "object",
+      "properties": {
+        "fromUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "toUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fromFarmerCode": { "type": "string", "minLength": 3, "maxLength": 24, "pattern": "^[A-Z0-9\\-]+$" },
+        "fromFarmName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "fromAvatar": { "type": "string", "minLength": 1, "maxLength": 12 },
+        "cropId": { "type": "string", "minLength": 1, "maxLength": 32, "pattern": "^[a-zA-Z0-9_]+$" },
+        "cropName": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "qty": { "type": "number" },
+        "status": { "type": "string", "enum": ["sent", "claimed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "fromUid", "toUid", "fromFarmerCode", "fromFarmName", "fromAvatar",
+        "cropId", "cropName", "qty", "status", "createdAt", "updatedAt"
+      ]
+    },
+    "FarmCloudSave": {
+      "title": "FarmCloudSave",
+      "description": "Private owner-only farm summary snapshot.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "farmerCode": { "type": "string", "minLength": 3, "maxLength": 24, "pattern": "^[A-Z0-9\\-]+$" },
+        "farmName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "level": { "type": "number" },
+        "coins": { "type": "number" },
+        "dinars": { "type": "number" },
+        "unlockedSize": { "type": "number" },
+        "unlockedCrops": { "type": "array" },
+        "barn": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "farmerCode", "farmName", "level", "coins", "dinars", "unlockedSize", "unlockedCrops", "barn", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/farmers/{farmerId}": {
+      "schema": { "$ref": "#/entities/FarmerProfile" },
+      "description": "Public game-only farmer profiles keyed by auth UID."
+    },
+    "/farmerCodes/{farmerCode}": {
+      "schema": { "$ref": "#/entities/FarmerCodeDirectory" },
+      "description": "Lookup directory mapping Farmer ID code to UID."
+    },
+    "/friendRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/FriendRequest" },
+      "description": "Incoming and outgoing friend requests."
+    },
+    "/cropGifts/{giftId}": {
+      "schema": { "$ref": "#/entities/CropGift" },
+      "description": "Barn crop gifts delivered between friends."
+    },
+    "/users/{userId}/saves/{saveId}": {
+      "schema": { "$ref": "#/entities/FarmCloudSave" },
+      "description": "Owner-only farm state summary."
+    }
+  }
+}
