@@ -1,0 +1,6 @@
+{
+  "name": "المزرعة السعيدة - Happy Farm Isometric PWA",
+  "description": "لعبة مزرعة أيزومترية تفاعلية كاملة تعمل كتطبيق ويب تقدمي (PWA) مع استخراج حقيقي للرسومات عبر معالجة الصور والعمل دون إنترنت.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
