@@ -940,19 +940,172 @@
       .zoom-controls { bottom: 86px; left: 8px; }
       .context-card { bottom: 86px; right: 8px; }
     }
+
+    /* Animated Splash Screen & Progress */
+    #loading-screen {
+      background: radial-gradient(circle at 50% 25%, #fff7d6 0%, #e0f2be 52%, #9ad379 100%);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    #loading-screen.hidden { opacity: 0; transform: scale(1.03); pointer-events: none; }
+    .splash-emblem {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: radial-gradient(circle, #fef08a 0%, #f59e0b 100%);
+      border: 3px solid #7c4720;
+      box-shadow: 0 6px 18px rgba(124, 71, 32, 0.25), inset 0 2px 6px rgba(255,255,255,0.7);
+      display: flex; align-items: center; justify-content: center;
+      animation: splashFloat 2.4s ease-in-out infinite;
+    }
+    @keyframes splashFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .splash-progress-bar {
+      width: 100%; height: 11px; border-radius: 99px;
+      background: #e2cfa8; border: 1.5px solid #9e6030;
+      overflow: hidden;
+    }
+    .splash-progress-fill {
+      height: 100%; width: 12%;
+      background: linear-gradient(90deg, #4ade80 0%, #16a34a 55%, #facc15 100%);
+      border-radius: 99px;
+      transition: width 0.35s ease;
+    }
+
+    /* Farmer Avatar Badge & Farm Name HUD */
+    .farmer-hud-badge {
+      width: 30px; height: 30px; border-radius: 9px;
+      background: #fffbeb; border: 1.5px solid #b88a55;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 17px; flex-shrink: 0;
+    }
+
+    /* Smart Quick-Action Radial Menu */
+    .radial-menu {
+      position: fixed;
+      z-index: 28;
+      width: 156px;
+      height: 156px;
+      margin-left: -78px;
+      margin-top: -78px;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(0.75);
+      transition: opacity 0.16s ease, transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+    }
+    .radial-menu.open {
+      pointer-events: auto;
+      opacity: 1;
+      transform: scale(1);
+    }
+    .radial-ring {
+      position: absolute; inset: 14px; border-radius: 50%;
+      border: 2px dashed rgba(124, 71, 32, 0.55);
+      background: radial-gradient(circle, rgba(255, 250, 240, 0.16) 0%, rgba(244, 228, 193, 0.42) 100%);
+      pointer-events: none;
+    }
+    .radial-center {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(180deg, #fffaf0 0%, #edd5a3 100%);
+      border: 2.5px solid #7c4720;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.28);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 800; color: #5c3317;
+      cursor: pointer;
+    }
+    .radial-btn {
+      position: absolute;
+      width: 48px; height: 48px;
+      margin-left: -24px; margin-top: -24px;
+      border-radius: 50%;
+      border: 2px solid #7c4720;
+      background: linear-gradient(180deg, #fffdf6 0%, #f4dfb4 100%);
+      color: var(--ink-primary);
+      box-shadow: 0 3px 0 #5c3317, 0 5px 12px rgba(0,0,0,0.26);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1px; cursor: pointer; font-family: inherit;
+      padding: 2px;
+      transition: transform 0.1s ease;
+    }
+    .radial-btn:active { transform: scale(0.92); }
+    .radial-btn:disabled { opacity: 0.48; cursor: not-allowed; }
+    .radial-btn .rb-ico { font-size: 16px; line-height: 1; }
+    .radial-btn .rb-lbl { font-size: 9px; font-weight: 800; line-height: 1; white-space: nowrap; }
+    .radial-btn.pos-n { left: 50%; top: 8px; }
+    .radial-btn.pos-e { left: calc(100% - 8px); top: 50%; }
+    .radial-btn.pos-s { left: 50%; top: calc(100% - 8px); }
+    .radial-btn.pos-w { left: 8px; top: 50%; }
+    .radial-btn.dinar { background: linear-gradient(180deg, #e0f2fe 0%, #7dd3fc 100%); border-color: #0369a1; color: #0c4a6e; }
+    .radial-btn.action { background: linear-gradient(180deg, #dcfce7 0%, #86efac 100%); border-color: #15803d; color: #14532d; }
+
+    /* Skill Tree & Upgrades */
+    .skill-card {
+      background: linear-gradient(180deg, #fffaf0 0%, #f5e6c8 100%);
+      border: 2px solid var(--border-wood);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 2px 0 #c9a777;
+    }
+    .skill-pips { display: flex; gap: 4px; align-items: center; }
+    .skill-pip {
+      height: 8px; flex: 1; max-width: 28px; border-radius: 4px;
+      background: #dfd0b0; border: 1px solid #b88a55;
+    }
+    .skill-pip.filled { background: linear-gradient(90deg, #facc15, #eab308); border-color: #92400e; }
+
+    /* Onboarding Avatar Picker & Farm Log */
+    .avatar-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+    }
+    .avatar-option {
+      min-height: 48px; border-radius: 12px;
+      border: 2px solid var(--border-wood);
+      background: #fffdf7; font-size: 24px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.1s ease, border-color 0.15s ease;
+    }
+    .avatar-option.selected {
+      border-color: #16a34a; background: #dcfce7;
+      box-shadow: 0 0 0 2px #86efac; transform: scale(1.06);
+    }
+    .log-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: #fffaf0; border: 1.5px solid var(--border-wood);
+      border-radius: 12px; padding: 9px 11px;
+    }
+    .log-ico { font-size: 20px; line-height: 1.2; flex-shrink: 0; }
+    .vip-pin-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .vip-pin-row .form-input { flex: 1; min-width: 130px; letter-spacing: 3px; text-align: center; }
   </style>
 </head>
 <body>
   <input id="sprite-file-input" type="file" accept="image/*" style="display:none;" />
   <input id="save-import-input" type="file" accept=".json,application/json" style="display:none;" />
 
-  <!-- Loading / Fallback Upload Screen -->
+  <!-- Animated Illustrated Splash / Fallback Upload Screen -->
   <div id="loading-screen">
     <div class="loader-card">
-      <div id="loading-spinner" class="loader-spinner"></div>
-      <h2 style="margin: 0; font-size: 20px; font-weight: 800;">المزرعة السعيدة</h2>
+      <div class="splash-emblem" aria-hidden="true">
+        <svg width="62" height="62" viewBox="0 0 64 64" fill="none">
+          <path d="M12 34L32 16L52 34V52H12V34Z" fill="#dc2626" stroke="#451a03" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M8 35L32 13L56 35" stroke="#7c2d12" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="24" y="37" width="16" height="15" rx="2" fill="#f5e0b7" stroke="#451a03" stroke-width="2"/>
+          <path d="M24 37L40 52M40 37L24 52" stroke="#7c4720" stroke-width="1.8"/>
+          <circle cx="32" cy="26" r="3.5" fill="#fef08a" stroke="#78350f" stroke-width="1.5"/>
+          <path d="M6 53H58" stroke="#15803d" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div id="loading-spinner" class="loader-spinner" style="width:28px; height:28px; border-width:3px;"></div>
+      <h2 style="margin: 0; font-size: 22px; font-weight: 800; color:#5c3317;">المزرعة السعيدة</h2>
+      <div class="splash-progress-bar">
+        <div id="splash-progress-fill" class="splash-progress-fill"></div>
+      </div>
       <p id="loading-status" style="margin: 0; font-size: 13px; color: var(--ink-muted); line-height: 1.6;">
-        جاري تحميل حزم الرسومات وفصل الخلفية واستخراج الكائنات...
+        جاري تحضير المزرعة واستخراج الرسومات وتحميل الحفظ المحلي...
       </p>
       <div id="loading-fallback-actions" style="display:none; flex-direction:column; gap:8px; width:100%;">
         <button id="btn-upload-fallback" class="btn-action" type="button" style="width:100%;">
@@ -971,11 +1124,12 @@
   <!-- Top HUD -->
   <header class="top-hud">
     <div class="hud-group">
-      <div class="hud-card">
+      <div class="hud-card" id="hud-profile-card" title="مزرعة السعادة">
+        <span id="hud-farmer-avatar" class="farmer-hud-badge">👨‍🌾</span>
         <div id="hud-level" class="level-badge tabular">1</div>
         <div class="xp-wrap">
           <div class="xp-label">
-            <span>المستوى</span>
+            <span id="hud-farm-name-label" style="max-width:74px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">المستوى</span>
             <span id="hud-xp-text" class="tabular">0/100</span>
           </div>
           <div class="xp-bar">
@@ -1052,7 +1206,7 @@
       <button id="btn-barn" class="hud-btn" type="button" title="الحظيرة والسوق">
         <span>🏚️</span>
         <span class="hud-label-hide-sm">الحظيرة</span>
-        <span id="hud-barn-count" class="stat-sub tabular">(0/80)</span>
+        <span id="hud-barn-count" class="stat-sub tabular">(0/50)</span>
       </button>
 
       <button id="btn-shop" class="hud-btn primary" type="button">
@@ -1071,6 +1225,11 @@
       <button id="btn-inspector" class="hud-btn" type="button" title="مفتش استخراج الرسومات (متعدد الحزم)">
         <span>🖼️</span>
         <span class="hud-label-hide-sm">الرسومات</span>
+      </button>
+
+      <button id="btn-notifications" class="hud-btn" type="button" title="مركز الإشعارات وسجل المزرعة">
+        <span>🔔</span>
+        <span id="notif-unread-badge" class="hud-count-tag tabular" style="display:none;">0</span>
       </button>
 
       <button id="btn-settings" class="hud-btn" type="button" title="الإعدادات، التصدير، وهدايا VIP">
@@ -1129,6 +1288,13 @@
     </div>
     <div id="context-body" style="font-size:12px; color:var(--ink-primary); line-height:1.5;"></div>
     <div id="context-actions" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+  </div>
+
+  <!-- Smart Quick-Action Radial Menu -->
+  <div id="radial-menu" class="radial-menu" aria-hidden="true">
+    <div class="radial-ring"></div>
+    <div id="radial-buttons"></div>
+    <button id="radial-close" class="radial-center" type="button" title="إغلاق">×</button>
   </div>
 
   <!-- Bottom Dock Toolbar -->
@@ -1390,14 +1556,17 @@
       <div class="modal-body">
         <div class="seg-tabs">
           <button class="seg-tab active" data-house-tab="kitchen" type="button">مطبخ المزرعة</button>
+          <button class="seg-tab" data-house-tab="skills" type="button">التطويرات والمهارات</button>
           <button class="seg-tab" data-house-tab="info" type="button">نظرة عامة وإعدادات</button>
         </div>
 
         <div id="house-view-kitchen" style="display:flex; flex-direction:column; gap:10px;"></div>
 
+        <div id="house-view-skills" style="display:none; flex-direction:column; gap:10px;"></div>
+
         <div id="house-view-info" style="display:none; flex-direction:column; gap:10px;">
           <div style="background:var(--surface-warm); border:1px solid var(--border-wood); border-radius:12px; padding:12px; font-size:13px; line-height:1.7;">
-            <div><strong>المزارع:</strong> المستوى <span id="house-lvl" class="tabular">1</span></div>
+            <div><strong>المزارع:</strong> <span id="house-farmer-display">👨‍🌾 مزرعة السعادة</span> — المستوى <span id="house-lvl" class="tabular">1</span></div>
             <div><strong>مساحة الأرض المفتوحة:</strong> <span id="house-land" class="tabular">6×6</span></div>
             <div><strong>إجمالي الحصاد:</strong> <span id="house-harvests" class="tabular">0</span></div>
             <div style="color:var(--ink-muted); font-size:12px; margin-top:4px;">
@@ -1406,6 +1575,7 @@
               • المطبخ: دقيق + بيض + حليب ← كيك ريفي | 2 باذنجان وطماطم ← طاجن خضار
             </div>
           </div>
+          <button id="btn-edit-profile" class="btn-secondary" type="button">تغيير اسم المزرعة وشخصية المزارع</button>
           <button id="btn-daily-gift" class="btn-action" type="button">استلام المكافأة الدورية (+75 ذهبية)</button>
           <button id="btn-reset-farm" class="btn-danger" type="button">إعادة تشغيل المزرعة من البداية</button>
         </div>
@@ -1510,17 +1680,61 @@
         </div>
 
         <div class="order-card" style="background:linear-gradient(180deg,#fefce8 0%,#fef08a 100%); border-color:#d97706;">
-          <div style="font-size:14px; font-weight:800; color:#78350f;">🎁 صندوق هدايا المطور / VIP</div>
+          <div style="font-size:14px; font-weight:800; color:#78350f;">🔒 صندوق هدايا المطور / VIP (محمي برمز PIN)</div>
           <div style="font-size:12px; color:#92400e; line-height:1.5;">
-            لتجربة بناء وتوسيع كامل المزرعة والمباني فوراً: يمنحك <strong>+50,000 عملة ذهبية</strong> و <strong>+500 دينار</strong>!
+            مقفل برمز سري مكون من 4 أرقام لحماية توازن اللعب. أدخل الرمز لفتح <strong>+50,000 ذهب</strong> و <strong>+500 دينار</strong>!
           </div>
-          <button id="btn-vip-gift" class="btn-gold" type="button">فتح صندوق VIP (+50,000 ذهب · +500 دينار)</button>
+          <div class="vip-pin-row">
+            <input id="vip-pin-input" type="password" inputmode="numeric" maxlength="4" class="form-input" placeholder="••••" autocomplete="off" />
+            <button id="btn-vip-gift" class="btn-gold" type="button">فتح صندوق VIP</button>
+          </div>
         </div>
 
         <div class="order-card">
           <div style="font-size:14px; font-weight:800;">إدارة اللعبة</div>
           <button id="btn-reset-farm-settings" class="btn-danger" type="button">إعادة ضبط المزرعة إلى البداية</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Farm Naming & Farmer Avatar Onboarding Modal -->
+  <div id="modal-onboarding" class="modal-backdrop">
+    <div class="modal-panel narrow">
+      <div class="modal-head">
+        <h3 class="modal-title">🌻 أهلاً بك في مزرعتك الجديدة!</h3>
+        <button class="modal-close" data-close="modal-onboarding" type="button">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:13px; color:var(--ink-muted); line-height:1.6;">
+          اختر اسماً مميزاً لمزرعتك وسيظهر على لوحة المزرعة الخشبية بجانب منزلك، واختر شارة المزارع الخاصة بك:
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label for="onboard-farm-name" style="font-size:13px; font-weight:800;">اسم المزرعة</label>
+          <input id="onboard-farm-name" type="text" maxlength="22" class="form-input" value="مزرعة السعادة" placeholder="مثال: مزرعة السعادة" />
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:13px; font-weight:800;">شارة المزارع</div>
+          <div id="onboard-avatars" class="avatar-grid"></div>
+        </div>
+        <button id="btn-onboard-save" class="btn-action" type="button">ابدأ الزراعة الآن! 🚜</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Center & Farm Log Modal -->
+  <div id="modal-notifications" class="modal-backdrop">
+    <div class="modal-panel narrow">
+      <div class="modal-head">
+        <h3 class="modal-title">🔔 مركز الإشعارات وسجل المزرعة</h3>
+        <button class="modal-close" data-close="modal-notifications" type="button">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <span style="font-size:12px; color:var(--ink-muted); font-weight:700;">أحدث أحداث المزرعة، الجيران، والمبيعات</span>
+          <button id="btn-clear-notifs" class="btn-secondary" type="button" style="min-height:32px; padding:4px 10px; font-size:11px;">مسح السجل</button>
+        </div>
+        <div id="notifications-list" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
     </div>
   </div>
@@ -1539,6 +1753,14 @@
     ];
     const STORAGE_KEY = 'happy_farm_iso_save_v3';
     const MUTE_KEY = 'happy_farm_sfx_muted';
+    const VIP_PIN_CODE = '1234'; // رمز حماية صندوق VIP (قابل للتعديل من الكود)
+    const FARMER_AVATARS = ['👨‍🌾', '👩‍🌾', '🧑‍🌾', '🤠', '👒', '🌻'];
+    const SKILL_DEFS = [
+      { id: 'speed',     icon: '⚡', name: 'محراث وسقي سريع',    maxLevel: 5, baseCoins: 350, stepCoins: 350, starCost: () => 1, desc: 'يزيد سرعة نمو جميع المحاصيل +10% لكل مستوى (حتى 50%).' },
+      { id: 'harvester', icon: '🌾', name: 'الحصاد الماهر',       maxLevel: 5, baseCoins: 400, stepCoins: 400, starCost: () => 1, desc: 'فرصة +12% لكل مستوى للحصول على محصول إضافي مجاني عند الحصاد.' },
+      { id: 'barn',      icon: '🏚️', name: 'توسيع سعة الحظيرة', maxLevel: 3, costs: [600, 1400, 3200], starCost: (lvl) => lvl + 1, desc: 'يرفع سعة الحظيرة: 50 ← 100 ← 250 ← سعة غير محدودة (∞).' },
+      { id: 'crafter',   icon: '⚙️', name: 'حرفي الإنتاج',       maxLevel: 3, baseCoins: 550, stepCoins: 550, starCost: () => 1, desc: 'يقلل وقت التصنيع والطهي في الجبن والطاحونة والمخبز والمطبخ 10% لكل مستوى.' }
+    ];
     const MAX_GRID_SIZE = 12;
     const TILE_W = 108;
     const TILE_H = 54;
@@ -2306,6 +2528,14 @@
         claimedAch: {},
         stallSlots: Array.from({ length: 6 }, () => null),
         weather: { timeMode: 'auto', cycleStart: now, rainingUntil: 0, nextRainAt: now + 75000 },
+        profile: { farmName: 'مزرعة السعادة', avatar: '👨‍🌾', onboarded: false },
+        xpStars: 1,
+        skills: { speed: 0, harvester: 0, barn: 0, crafter: 0 },
+        farmLog: [
+          { id: 'init_welcome', icon: '🌻', text: 'مرحباً بك في مزرعتك الجديدة! ازرع واحصد واكسب نجوم المهارة.', ts: now }
+        ],
+        unreadNotifs: 1,
+        nextNeighborAt: now + 55000,
         customSpriteMap: null,
         grid
       };
@@ -2346,6 +2576,14 @@
       if (typeof GameState.boost2xUntil !== 'number') GameState.boost2xUntil = 0;
       if (typeof GameState.guardProtectedUntil !== 'number') GameState.guardProtectedUntil = 0;
       if (typeof GameState.nextClutterAt !== 'number') GameState.nextClutterAt = now + 35000;
+      if (!GameState.profile) GameState.profile = { farmName: 'مزرعة السعادة', avatar: '👨‍🌾', onboarded: true };
+      if (!GameState.profile.farmName) GameState.profile.farmName = 'مزرعة السعادة';
+      if (!GameState.profile.avatar) GameState.profile.avatar = '👨‍🌾';
+      if (typeof GameState.xpStars !== 'number') GameState.xpStars = 1;
+      if (!GameState.skills) GameState.skills = { speed: 0, harvester: 0, barn: 0, crafter: 0 };
+      if (!Array.isArray(GameState.farmLog)) GameState.farmLog = [];
+      if (typeof GameState.unreadNotifs !== 'number') GameState.unreadNotifs = 0;
+      if (typeof GameState.nextNeighborAt !== 'number') GameState.nextNeighborAt = now + 55000;
     }
 
     function loadGame() {
@@ -2376,6 +2614,22 @@
        ============================================================ */
     const Particles = [];
     const AnimalAnims = new Map();
+    const BUTTERFLY_COLORS = ['#fde047', '#f472b6', '#38bdf8', '#fb923c', '#c084fc'];
+    const Butterflies = Array.from({ length: 6 }, (_, i) => ({
+      r: 2 + Math.random() * 4,
+      c: 2 + Math.random() * 4,
+      tr: 2 + Math.random() * 4,
+      tc: 2 + Math.random() * 4,
+      phase: i * 1.1,
+      color: BUTTERFLY_COLORS[i % BUTTERFLY_COLORS.length]
+    }));
+    const SkyBirds = Array.from({ length: 3 }, (_, i) => ({
+      x: (i * 0.35) % 1,
+      y: 0.14 + i * 0.14,
+      vx: 0.032 + i * 0.008,
+      vy: 0.006 * (i % 2 === 0 ? 1 : -1),
+      phase: i * 2.1
+    }));
 
     function spawnBurst(r, c, kind, count = 8, screenOffset = { x: 0, y: 0 }) {
       for (let i = 0; i < count; i++) {
@@ -2515,6 +2769,7 @@
                   if (!tt.entity && !tt.crop && !tt.treasure) {
                     tt.treasure = { coins: 40 + Math.floor(Math.random() * 65), dinars: Math.random() < 0.45 ? 1 : 0 };
                     spawnBurst(nr, nc, 'sparkle', 10);
+                    logFarmEvent('عثر كلب الحراسة على صندوق كنز مدفون!', '🏴‍☠️');
                     showToast('كلب الحراسة عثر على صندوق كنز مدفون!', 'success');
                     break;
                   }
@@ -2522,6 +2777,44 @@
               }
             }
           }
+        }
+      }
+
+      // Stall item sold notifications
+      if (Array.isArray(GameState.stallSlots)) {
+        for (const s of GameState.stallSlots) {
+          if (s && now >= s.soldAt && !s.logged) {
+            s.logged = true;
+            const pname = PRODUCTS[s.itemId]?.name || 'منتج';
+            logFarmEvent(`اشترى ${s.buyer} (${s.qty}× ${pname}) من الكشك (+${s.price} ذهب)`, '🏪');
+          }
+        }
+      }
+
+      // Periodic Friendly Neighbor Visit (waters a dry crop or gifts coins +15 XP)
+      if (now >= (GameState.nextNeighborAt || 0)) {
+        GameState.nextNeighborAt = now + 70000 + Math.random() * 40000;
+        const neighbor = NEIGHBORS[Math.floor(Math.random() * NEIGHBORS.length)];
+        let wateredDry = null;
+        for (let r = 0; r < GameState.unlockedSize && !wateredDry; r++) {
+          for (let c = 0; c < GameState.unlockedSize && !wateredDry; c++) {
+            const tile = GameState.grid[r][c];
+            if (tile.crop && !tile.crop.watered && !getCropProgress(tile.crop, now).ready) wateredDry = { tile, r, c };
+          }
+        }
+        if (wateredDry) {
+          const { tile, r, c } = wateredDry;
+          tile.crop.watered = true;
+          const elapsed = now - tile.crop.plantedAt;
+          tile.crop.duration = elapsed + Math.round(Math.max(1000, tile.crop.duration - elapsed) * 0.5);
+          spawnBurst(r, c, 'water', 8);
+          logFarmEvent(`قام ${neighbor} بسقي محصولك (+15 خبرة)`, '🤝');
+          awardRewards(0, 15, r, c, `${neighbor} سقى!`);
+          showToast(`🤝 ${neighbor} زار مزرعتك وسقى محصولك (+15 خبرة)!`, 'success');
+        } else {
+          logFarmEvent(`زارك ${neighbor} وأهدى المزرعة +25 ذهب و +15 خبرة`, '🤝');
+          awardRewards(25, 15);
+          showToast(`🤝 ${neighbor} زار مزرعتك وأهداك +25 ذهب و +15 خبرة!`, 'success');
         }
       }
 
@@ -2583,6 +2876,26 @@
         }
       }
 
+      // Living Butterflies & Sky Birds motion
+      if (!ws.isRaining && ws.nightAlpha < 0.28) {
+        for (const bf of Butterflies) {
+          const dr = bf.tr - bf.r, dc = bf.tc - bf.c;
+          if (Math.hypot(dr, dc) < 0.15) {
+            const span = Math.max(4, GameState.unlockedSize - 1);
+            bf.tr = 0.5 + Math.random() * span;
+            bf.tc = 0.5 + Math.random() * span;
+          } else {
+            bf.r += dr * Math.min(1, dt * 0.85);
+            bf.c += dc * Math.min(1, dt * 0.85);
+          }
+        }
+      }
+      for (const bd of SkyBirds) {
+        bd.x += bd.vx * dt;
+        bd.y += bd.vy * dt;
+        if (bd.x > 1.15) { bd.x = -0.15; bd.y = 0.1 + Math.random() * 0.45; }
+      }
+
       for (let i = Particles.length - 1; i >= 0; i--) {
         const pt = Particles[i];
         pt.life += dt;
@@ -2616,17 +2929,39 @@
     }
 
     /* ============================================================
-       7. PROGRESSION, BARN, STALL & ACHIEVEMENTS HELPERS
+       7. PROGRESSION, SKILLS, FARM LOG, BARN & COMBO STREAK
        ============================================================ */
+    function logFarmEvent(text, icon = '🌾') {
+      ensureStateDefaults();
+      GameState.farmLog.unshift({ id: Math.random().toString(36).slice(2, 8), icon, text, ts: Date.now() });
+      if (GameState.farmLog.length > 40) GameState.farmLog.length = 40;
+      GameState.unreadNotifs = Math.min(99, (GameState.unreadNotifs || 0) + 1);
+    }
+
     function isTileUnlocked(r, c) {
       return r >= 0 && c >= 0 && r < GameState.unlockedSize && c < GameState.unlockedSize;
     }
-    function getMaxBarnCapacity() { return 80 + (GameState.level - 1) * 20; }
+    function getMaxBarnCapacity() {
+      const lvl = GameState.skills?.barn || 0;
+      if (lvl >= 3) return Infinity;
+      const base = [50, 100, 250][lvl] || 50;
+      return base + (GameState.level - 1) * 20;
+    }
+    function formatBarnCap(cap) { return cap === Infinity ? '∞' : cap; }
+    function getCropGrowDuration(baseMs) {
+      const speedLvl = GameState.skills?.speed || 0;
+      return Math.max(2000, Math.round(baseMs * Math.max(0.5, 1 - speedLvl * 0.1)));
+    }
+    function getCraftDuration(baseMs) {
+      const crafterLvl = GameState.skills?.crafter || 0;
+      return Math.max(2000, Math.round(baseMs * Math.max(0.7, 1 - crafterLvl * 0.1)));
+    }
     function getBarnUsed() { return Object.values(GameState.barn).reduce((s, n) => s + (n || 0), 0); }
 
     function addBarnItem(itemId, qty = 1) {
-      if (getBarnUsed() + qty > getMaxBarnCapacity()) {
-        showToast('الحظيرة ممتلئة! بع بعض المنتجات في السوق أو كشك البيع.', 'warn');
+      const cap = getMaxBarnCapacity();
+      if (cap !== Infinity && getBarnUsed() + qty > cap) {
+        showToast('الحظيرة ممتلئة! بع بعض المنتجات أو طوّر سعة الحظيرة من المنزل.', 'warn');
         SFX.error();
         return false;
       }
@@ -2654,8 +2989,10 @@
           const bonus = GameState.level * 75;
           GameState.coins += bonus;
           GameState.dinars += 2;
+          GameState.xpStars = (GameState.xpStars || 0) + 2;
           SFX.levelUp();
-          showToast(`تهانينا! وصلت للمستوى ${GameState.level} (+${bonus} ذهب، +2 دنانير، +20 سعة للحظيرة)`, 'success');
+          logFarmEvent(`تهانينا! وصلت للمستوى ${GameState.level} (+${bonus} ذهب، +2 💎، +2 ⭐ مهارة)`, '🎉');
+          showToast(`تهانينا! وصلت للمستوى ${GameState.level} (+${bonus} ذهب، +2 دنانير، +2 ⭐ مهارة)`, 'success');
         }
       }
       if (r !== null && c !== null) {
@@ -2668,6 +3005,19 @@
       }
       updateHUD();
       saveGame();
+    }
+
+    let lastHarvestAt = 0;
+    let harvestComboCount = 0;
+    function registerHarvestCombo(r, c) {
+      const now = Date.now();
+      harvestComboCount = (now - lastHarvestAt <= 3000) ? harvestComboCount + 1 : 1;
+      lastHarvestAt = now;
+      if (harvestComboCount >= 2) {
+        const bonusXp = Math.min(25, harvestComboCount * 2);
+        spawnFloatText(r, c, `🔥 ${harvestComboCount}x Combo! +${bonusXp} XP`, '#fb923c', 22);
+        awardRewards(0, bonusXp);
+      }
     }
 
     function trackQuest(stat, amount = 1) {
@@ -2730,8 +3080,8 @@
     }
 
     const FloatingFX = [];
-    function spawnFloatText(r, c, text, color = '#ffffff') {
-      FloatingFX.push({ r, c, text, color, createdAt: performance.now(), duration: 1350 });
+    function spawnFloatText(r, c, text, color = '#ffffff', oyOffset = 0) {
+      FloatingFX.push({ r, c, text, color, oyOffset, createdAt: performance.now(), duration: 1350 });
     }
 
     /* ============================================================
@@ -2753,7 +3103,7 @@
       document.querySelectorAll('.tool-btn[data-tool]').forEach((btn) => btn.classList.toggle('active', btn.dataset.tool === tool));
       document.getElementById('seed-strip').classList.toggle('visible', tool === 'plant');
       canvas.classList.toggle('tool-cursor', tool !== 'select' || !!pendingPlacement);
-      if (tool !== 'select') closeContextCard();
+      if (tool !== 'select') { closeContextCard(); closeRadialMenu(); }
     }
 
     function toggleBrushMode() {
@@ -2772,6 +3122,7 @@
       document.getElementById('mode-banner').classList.add('visible');
       canvas.classList.add('tool-cursor');
       closeContextCard();
+      closeRadialMenu();
     }
 
     function cancelPlacement() {
@@ -2898,7 +3249,8 @@
         }
         GameState.coins -= cropDef.seedCost;
         const isRaining = getWeatherState(now).isRaining;
-        tile.crop = { id: cropDef.id, plantedAt: now, duration: isRaining ? Math.round(cropDef.growTime * 0.5) : cropDef.growTime, watered: isRaining };
+        const baseDur = getCropGrowDuration(cropDef.growTime);
+        tile.crop = { id: cropDef.id, plantedAt: now, duration: isRaining ? Math.round(baseDur * 0.5) : baseDur, watered: isRaining };
         SFX.plant();
         awardRewards(0, 3, r, c, cropDef.name);
         return;
@@ -2923,12 +3275,13 @@
 
       if (activeTool === 'select') {
         if (tile.crop) {
-          if (getCropProgress(tile.crop, now).ready) harvestCropTile(tile, r, c);
-          else openContextCard(r, c);
+          if (getCropProgress(tile.crop, now).ready) { closeRadialMenu(); harvestCropTile(tile, r, c); }
+          else { openRadialMenu(r, c); }
           return;
         }
         if (tile.entity) { interactEntity(tile, r, c, now); return; }
         closeContextCard();
+        closeRadialMenu();
         SFX.tap();
       }
     }
@@ -2956,16 +3309,22 @@
 
     function harvestCropTile(tile, r, c) {
       const def = CROPS[tile.crop.id];
-      if (!addBarnItem(def.productId, 1)) return;
+      const bonusChance = (GameState.skills?.harvester || 0) * 0.12;
+      const gotBonus = bonusChance > 0 && Math.random() < bonusChance;
+      const qty = gotBonus ? 2 : 1;
+      if (!addBarnItem(def.productId, qty)) return;
       const info = getProductPriceInfo(def.productId);
       const xpGain = info.isHot ? def.xp * 2 : def.xp;
       tile.crop = null;
       GameState.totalHarvests += 1;
       SFX.harvest();
-      spawnBurst(r, c, 'sparkle', 10);
+      spawnBurst(r, c, 'sparkle', gotBonus ? 14 : 10);
       trackQuest('harvests', 1);
-      awardRewards(0, xpGain, r, c, info.isHot ? `🎉 +1 ${def.name} (×2)` : `+1 ${def.name}`);
+      const lbl = gotBonus ? `🌾 +${qty} ${def.name} (حصاد مضاعف!)` : (info.isHot ? `🎉 +1 ${def.name} (×2)` : `+1 ${def.name}`);
+      awardRewards(0, xpGain, r, c, lbl);
+      registerHarvestCombo(r, c);
       closeContextCard();
+      closeRadialMenu();
     }
 
     function tryCollectOrHarvest(r, c, now, isSwipe = false) {
@@ -2983,7 +3342,7 @@
         else if (shopDef && shopDef.type === 'animal' && (ent.state === 'ready' || (ent.state === 'producing' && now >= ent.readyAt))) collectAnimal(tile, r, c, shopDef);
         else if (shopDef && (shopDef.type === 'machine' || shopDef.type === 'mill' || shopDef.type === 'bakery') && ent.state === 'producing' && now >= ent.readyAt) collectMachine(tile, r, c, shopDef);
         else if (ent.type === 'house' && GameState.kitchen.state === 'cooking' && now >= GameState.kitchen.readyAt) collectKitchen(r, c);
-        else if (!isSwipe) openContextCard(r, c);
+        else if (!isSwipe) openRadialMenu(r, c);
         return;
       }
       if (!isSwipe) showToast('لا يوجد شيء جاهز للحصاد هنا');
@@ -2999,7 +3358,9 @@
       const info = getProductPriceInfo(shopDef.produceItem, now);
       const xpGain = info.isHot ? shopDef.xp * 2 : shopDef.xp;
       awardRewards(0, xpGain, r, c, `+${shopDef.produceQty} ${PRODUCTS[shopDef.produceItem].name}`);
+      registerHarvestCombo(r, c);
       closeContextCard();
+      closeRadialMenu();
     }
 
     function collectAnimal(tile, r, c, shopDef) {
@@ -3015,7 +3376,9 @@
       const info = getProductPriceInfo(shopDef.produceItem);
       const xpGain = info.isHot ? shopDef.xp * 2 : shopDef.xp;
       awardRewards(0, xpGain, r, c, `+${shopDef.produceQty} ${PRODUCTS[shopDef.produceItem].name}`);
+      registerHarvestCombo(r, c);
       closeContextCard();
+      closeRadialMenu();
     }
 
     function feedAnimal(tile, r, c, shopDef, now, usePremium = false) {
@@ -3050,6 +3413,7 @@
       triggerAnimalHop(r, c);
       spawnBurst(r, c, 'sparkle', 10);
       trackQuest('feeds', 1);
+      logFarmEvent('تم تفعيل حماية كلب الحراسة للمزرعة لمدة 12 ساعة', '🛡️');
       showToast('تم تفعيل حماية كلب الحراسة لمدة 12 ساعة! سيبحث عن كنوز قريباً.', 'success');
       awardRewards(0, 15, r, c, 'حماية 12 ساعة 🛡️');
       openContextCard(r, c);
@@ -3065,7 +3429,7 @@
         for (const req of recipe.inputs) consumeBarnItem(req.itemId, req.qty);
         tile.entity.state = 'producing';
         tile.entity.recipeId = recipe.id;
-        tile.entity.readyAt = now + recipe.duration;
+        tile.entity.readyAt = now + getCraftDuration(recipe.duration);
         SFX.tap();
         awardRewards(0, 5, r, c, `بدأ ${recipe.name}`);
         openContextCard(r, c);
@@ -3077,7 +3441,7 @@
         SFX.error(); showToast(`تحتاج إلى ${shopDef.inputQty} ${inName} في الحظيرة!`, 'warn'); return;
       }
       tile.entity.state = 'producing';
-      tile.entity.readyAt = now + shopDef.duration;
+      tile.entity.readyAt = now + getCraftDuration(shopDef.duration);
       SFX.tap();
       awardRewards(0, 5, r, c, 'بدأ التصنيع');
       openContextCard(r, c);
@@ -3102,7 +3466,9 @@
       spawnBurst(r, c, 'sparkle', 10);
       const info = getProductPriceInfo(outId);
       awardRewards(0, info.isHot ? xp * 2 : xp, r, c, `+${outQty} ${PRODUCTS[outId].name}`);
+      registerHarvestCombo(r, c);
       closeContextCard();
+      closeRadialMenu();
     }
 
     function collectKitchen(r = 0, c = 0) {
@@ -3117,48 +3483,39 @@
       spawnBurst(r, c, 'sparkle', 10);
       const info = getProductPriceInfo(rec.outputItem);
       awardRewards(0, info.isHot ? rec.xp * 2 : rec.xp, r, c, `+1 ${PRODUCTS[rec.outputItem].name}`);
+      registerHarvestCombo(r, c);
       return true;
     }
 
     function interactEntity(tile, r, c, now) {
       const ent = tile.entity;
-      if (ent.type === 'well' || ent.type === 'trough') { refillWater(r, c); return; }
-      if (ent.type === 'barn') { SFX.tap(); openBarnModal(); return; }
-      if (ent.type === 'market_stall') { SFX.tap(); openStallModal(); return; }
-      if (ent.type === 'house') {
-        if (GameState.kitchen.state === 'cooking' && now >= GameState.kitchen.readyAt) {
-          collectKitchen(r, c);
-          return;
-        }
-        SFX.tap(); openHouseModal(); return;
+      if (ent.type === 'well' || ent.type === 'trough') { closeRadialMenu(); refillWater(r, c); return; }
+      if (ent.type === 'house' && GameState.kitchen.state === 'cooking' && now >= GameState.kitchen.readyAt) {
+        closeRadialMenu(); collectKitchen(r, c); return;
       }
       if (ent.type === 'donkey' || ent.type === 'honeybee') {
         SFX.animal(ent.type);
         triggerAnimalHop(r, c);
         if (now >= (ent.readyAt || 0)) {
+          closeRadialMenu();
           ent.readyAt = now + 35000;
           dropLuckyCoinNear(r, c, 8, 24);
           spawnBurst(r, c, 'sparkle', 7);
           awardRewards(10, 10, r, c, 'صداقة رائعة!');
-        } else openContextCard(r, c);
+        } else openRadialMenu(r, c);
         return;
       }
 
       const shopDef = SHOP_ITEMS.find(i => i.id === ent.type);
       if (shopDef && (shopDef.type === 'tree' || shopDef.type === 'auto_prod') && now >= ent.readyAt) { collectTree(tile, r, c, shopDef, now); return; }
-      if (shopDef && shopDef.type === 'animal') {
-        if (ent.state === 'ready' || (ent.state === 'producing' && now >= ent.readyAt)) { collectAnimal(tile, r, c, shopDef); return; }
-        SFX.animal(ent.type); triggerAnimalHop(r, c);
-        if (now >= (ent.tipAt || 0)) {
-          ent.tipAt = now + 25000;
-          dropLuckyCoinNear(r, c, 5, 18);
-        }
+      if (shopDef && shopDef.type === 'animal' && (ent.state === 'ready' || (ent.state === 'producing' && now >= ent.readyAt))) {
+        collectAnimal(tile, r, c, shopDef); return;
       }
       if (shopDef && (shopDef.type === 'machine' || shopDef.type === 'mill' || shopDef.type === 'bakery') && ent.state === 'producing' && now >= ent.readyAt) {
         collectMachine(tile, r, c, shopDef); return;
       }
       if (!shopDef || shopDef.type !== 'animal') SFX.tap();
-      openContextCard(r, c);
+      openRadialMenu(r, c);
     }
 
     function getEntityMeta(type) {
@@ -3172,6 +3529,7 @@
        10. CONTEXT CARD, BANK, FESTIVAL, DAILY WHEEL, ORDERS & MODALS
        ============================================================ */
     function openContextCard(r, c) {
+      closeRadialMenu();
       selectedContextTile = { r, c };
       document.getElementById('context-card').classList.add('visible');
       renderContextCard();
@@ -3179,6 +3537,146 @@
     function closeContextCard() {
       selectedContextTile = null;
       document.getElementById('context-card').classList.remove('visible');
+    }
+
+    let radialTargetTile = null;
+    function closeRadialMenu() {
+      radialTargetTile = null;
+      const el = document.getElementById('radial-menu');
+      if (el) { el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); }
+    }
+
+    function openRadialMenu(r, c) {
+      const tile = GameState.grid[r]?.[c];
+      if (!tile || (!tile.crop && !tile.entity)) { closeRadialMenu(); return; }
+      closeContextCard();
+      radialTargetTile = { r, c };
+
+      const menu = document.getElementById('radial-menu');
+      const btnsEl = document.getElementById('radial-buttons');
+      btnsEl.innerHTML = '';
+
+      const pos = tileToScreen(r, c);
+      const px = Math.min(Camera.width - 90, Math.max(90, pos.x));
+      const py = Math.min(Camera.height - 150, Math.max(115, pos.y - 26 * Camera.zoom));
+      menu.style.left = `${px}px`;
+      menu.style.top = `${py}px`;
+
+      const now = Date.now();
+      const slots = ['pos-n', 'pos-e', 'pos-s', 'pos-w'];
+      const actions = [];
+      const addAct = (ico, lbl, cls, fn, disabled = false) => {
+        if (actions.length >= 4) return;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = `radial-btn ${slots[actions.length]} ${cls || ''}`;
+        b.innerHTML = `<span class="rb-ico">${ico}</span><span class="rb-lbl">${lbl}</span>`;
+        b.disabled = !!disabled;
+        b.onclick = (e) => { e.stopPropagation(); fn(); };
+        actions.push(b);
+      };
+
+      if (tile.crop) {
+        const prog = getCropProgress(tile.crop, now);
+        if (prog.ready) {
+          addAct('🌾', 'حصاد', 'action', () => harvestCropTile(tile, r, c));
+        } else {
+          if (!tile.crop.watered) {
+            addAct('💧', 'سقي', 'action', () => {
+              if (GameState.water <= 0) { SFX.error(); showToast('نفد الماء! اضغط على البئر للتعبئة', 'warn'); return; }
+              waterCropTile(tile, r, c, Date.now());
+              openRadialMenu(r, c);
+            });
+          } else {
+            addAct('🌱', 'سماد 25', '', () => {
+              if (GameState.coins < 25) { SFX.error(); showToast('تحتاج 25 ذهب للسماد السريع', 'warn'); return; }
+              GameState.coins -= 25;
+              const tNow = Date.now();
+              const el = tNow - tile.crop.plantedAt;
+              tile.crop.duration = el + Math.round(Math.max(1000, tile.crop.duration - el) * 0.6);
+              SFX.plant(); spawnBurst(r, c, 'sparkle', 7);
+              awardRewards(0, 4, r, c, 'سماد سريع');
+              openRadialMenu(r, c);
+            });
+          }
+          addAct('💎', 'فوري (1)', 'dinar', () => {
+            if (GameState.dinars < 1) { SFX.error(); showToast('تحتاج ديناراً واحداً!', 'warn'); return; }
+            GameState.dinars -= 1;
+            tile.crop.plantedAt = Date.now() - tile.crop.duration - 500;
+            SFX.levelUp(); spawnBurst(r, c, 'sparkle', 10);
+            updateHUD(); saveGame();
+            openRadialMenu(r, c);
+          });
+        }
+        addAct('ℹ️', 'تفاصيل', '', () => openContextCard(r, c));
+      } else if (tile.entity) {
+        const ent = tile.entity;
+        const meta = getEntityMeta(ent.type);
+        const shopDef = SHOP_ITEMS.find(i => i.id === ent.type);
+
+        if (ent.type === 'house') {
+          if (GameState.kitchen.state === 'cooking') {
+            if (now >= GameState.kitchen.readyAt) addAct('🍰', 'جمع', 'action', () => { collectKitchen(r, c); closeRadialMenu(); });
+            else addAct('💎', 'فوري (1)', 'dinar', () => {
+              if (GameState.dinars < 1) { SFX.error(); showToast('تحتاج ديناراً واحداً!', 'warn'); return; }
+              GameState.dinars -= 1; GameState.kitchen.readyAt = Date.now() - 500;
+              SFX.levelUp(); updateHUD(); saveGame(); closeRadialMenu();
+            });
+          }
+          addAct('🏠', 'المطبخ', 'action', () => { closeRadialMenu(); openHouseModal(); });
+          addAct('⭐', 'المهارات', '', () => {
+            closeRadialMenu(); activeHouseTab = 'skills';
+            document.querySelectorAll('[data-house-tab]').forEach(t => t.classList.toggle('active', t.dataset.houseTab === 'skills'));
+            openHouseModal();
+          });
+        } else if (ent.type === 'barn') {
+          addAct('🏚️', 'فتح الحظيرة', 'action', () => { closeRadialMenu(); openBarnModal(); });
+        } else if (ent.type === 'market_stall') {
+          addAct('🏪', 'فتح الكشك', 'action', () => { closeRadialMenu(); openStallModal(); });
+        } else if (shopDef && shopDef.type === 'guard_dog') {
+          addAct('🥛', 'إطعام حليب', 'action', () => { feedGuardDog(tile, r, c, 'milk', Date.now()); closeRadialMenu(); }, (GameState.barn.milk || 0) < 1);
+          addAct('🥚', 'إطعام بيض', '', () => { feedGuardDog(tile, r, c, 'eggs', Date.now()); closeRadialMenu(); }, (GameState.barn.eggs || 0) < 1);
+        } else if (shopDef && shopDef.type === 'animal') {
+          if (ent.state === 'ready' || (ent.state === 'producing' && now >= ent.readyAt)) {
+            addAct('🌾', 'جمع', 'action', () => collectAnimal(tile, r, c, shopDef));
+          } else if (ent.state === 'hungry') {
+            addAct('🥣', 'إطعام', 'action', () => { feedAnimal(tile, r, c, shopDef, Date.now(), false); closeRadialMenu(); });
+            addAct('⭐', 'علف ×2', '', () => { feedAnimal(tile, r, c, shopDef, Date.now(), true); closeRadialMenu(); }, (GameState.barn.premium_feed || 0) < 1);
+          } else {
+            addAct('💎', 'فوري (1)', 'dinar', () => {
+              if (GameState.dinars < 1) { SFX.error(); showToast('تحتاج ديناراً واحداً!', 'warn'); return; }
+              GameState.dinars -= 1; ent.readyAt = Date.now() - 500; ent.state = 'ready';
+              SFX.levelUp(); updateHUD(); saveGame(); openRadialMenu(r, c);
+            });
+          }
+        } else if (shopDef && (shopDef.type === 'machine' || shopDef.type === 'mill' || shopDef.type === 'bakery')) {
+          if (ent.state === 'producing' && now >= ent.readyAt) {
+            addAct('🌾', 'جمع', 'action', () => collectMachine(tile, r, c, shopDef));
+          } else if (ent.state === 'idle') {
+            addAct('⚙️', 'تشغيل', 'action', () => openContextCard(r, c));
+          } else {
+            addAct('💎', 'فوري (1)', 'dinar', () => {
+              if (GameState.dinars < 1) { SFX.error(); showToast('تحتاج ديناراً واحداً!', 'warn'); return; }
+              GameState.dinars -= 1; ent.readyAt = Date.now() - 500;
+              SFX.levelUp(); updateHUD(); saveGame(); openRadialMenu(r, c);
+            });
+          }
+        } else if (shopDef && (shopDef.type === 'tree' || shopDef.type === 'auto_prod')) {
+          if (now >= ent.readyAt) addAct('🍎', 'جمع', 'action', () => collectTree(tile, r, c, shopDef, Date.now()));
+          else addAct('💎', 'فوري (1)', 'dinar', () => {
+            if (GameState.dinars < 1) { SFX.error(); showToast('تحتاج ديناراً واحداً!', 'warn'); return; }
+            GameState.dinars -= 1; ent.readyAt = Date.now() - 500;
+            SFX.levelUp(); updateHUD(); saveGame(); openRadialMenu(r, c);
+          });
+        }
+
+        addAct('🚚', 'نقل', '', () => { closeRadialMenu(); startPlacement('move', { name: meta.name }, r, c); });
+        addAct('ℹ️', 'تفاصيل', '', () => openContextCard(r, c));
+      }
+
+      actions.forEach(b => btnsEl.appendChild(b));
+      menu.classList.add('open');
+      menu.setAttribute('aria-hidden', 'false');
     }
 
     function renderContextCard() {
@@ -3799,9 +4297,11 @@
           if (!done || claimed) return;
           GameState.claimedAch[a.id] = true;
           GameState.dinars += a.dinars;
+          GameState.xpStars = (GameState.xpStars || 0) + 1;
           SFX.levelUp();
+          logFarmEvent(`فتحت إنجاز "${a.title}" (+${a.dinars} 💎، +1 ⭐ مهارة)`, '🏆');
           awardRewards(a.coins, 25);
-          showToast(`تم فتح إنجاز "${a.title}" (+${a.dinars} دنانير و +${a.coins} ذهب)!`, 'success');
+          showToast(`تم فتح إنجاز "${a.title}" (+${a.dinars} دنانير، +${a.coins} ذهب، +1 ⭐ مهارة)!`, 'success');
           openAchievementsModal();
         });
         btn.disabled = !done || claimed;
@@ -3811,15 +4311,22 @@
       document.getElementById('modal-achievements').classList.add('open');
     }
 
-    // Farmhouse Kitchen & Info Modal
+    // Farmhouse Kitchen, Skills & Info Modal
     let activeHouseTab = 'kitchen';
     function openHouseModal() {
       renderHouseModal();
       document.getElementById('modal-house').classList.add('open');
     }
 
+    function getSkillCost(def, curLvl) {
+      const coins = def.costs ? def.costs[curLvl] : (def.baseCoins + curLvl * def.stepCoins);
+      const stars = def.starCost ? def.starCost(curLvl) : 1;
+      return { coins, stars };
+    }
+
     function renderHouseModal() {
       document.getElementById('house-view-kitchen').style.display = activeHouseTab === 'kitchen' ? 'flex' : 'none';
+      document.getElementById('house-view-skills').style.display = activeHouseTab === 'skills' ? 'flex' : 'none';
       document.getElementById('house-view-info').style.display = activeHouseTab === 'info' ? 'flex' : 'none';
       const now = Date.now();
 
@@ -3844,13 +4351,14 @@
         } else {
           for (const rec of KITCHEN_RECIPES) {
             const can = rec.inputs.every(i => (GameState.barn[i.itemId] || 0) >= i.qty);
+            const effDur = getCraftDuration(rec.duration);
             const card = document.createElement('div');
             card.className = 'order-card';
             card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
               <strong style="font-size:15px;">${rec.name}</strong>
               <span class="tabular" style="font-size:12px; color:#b45309; font-weight:800;">سعر البيع: ${getProductPriceInfo(rec.outputItem).price} ذهب</span>
             </div>
-            <div style="font-size:12px; color:var(--ink-muted);">${rec.desc} · الوقت: ${rec.duration / 1000}ث</div>`;
+            <div style="font-size:12px; color:var(--ink-muted);">${rec.desc} · الوقت: ${Math.round(effDur / 1000)}ث</div>`;
             const reqs = document.createElement('div');
             reqs.className = 'order-req-list';
             for (const i of rec.inputs) {
@@ -3864,7 +4372,7 @@
             const btn = makeBtn('بدء الطهي الآن', 'btn-action', () => {
               if (!rec.inputs.every(i => (GameState.barn[i.itemId] || 0) >= i.qty)) return;
               for (const i of rec.inputs) consumeBarnItem(i.itemId, i.qty);
-              GameState.kitchen = { state: 'cooking', recipeId: rec.id, readyAt: Date.now() + rec.duration };
+              GameState.kitchen = { state: 'cooking', recipeId: rec.id, readyAt: Date.now() + effDur };
               SFX.tap(); saveGame(); updateHUD(); renderHouseModal();
             });
             btn.disabled = !can;
@@ -3872,7 +4380,67 @@
             wrap.appendChild(card);
           }
         }
+      } else if (activeHouseTab === 'skills') {
+        ensureStateDefaults();
+        const wrap = document.getElementById('house-view-skills');
+        wrap.innerHTML = '';
+
+        const header = document.createElement('div');
+        header.className = 'order-card';
+        header.style.cssText = 'background:linear-gradient(180deg,#fefce8 0%,#fef3c7 100%); border-color:#d97706;';
+        header.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <strong style="font-size:14px; color:#78350f;">⭐ نجوم المهارة المتاحة: <span class="tabular">${GameState.xpStars || 0}</span></strong>
+          <span style="font-size:12px; color:#92400e;">تكسب +2 ⭐ عند رفع المستوى و +1 ⭐ من الإنجازات</span>
+        </div>`;
+        wrap.appendChild(header);
+
+        for (const def of SKILL_DEFS) {
+          const curLvl = GameState.skills[def.id] || 0;
+          const maxed = curLvl >= def.maxLevel;
+          const card = document.createElement('div');
+          card.className = 'skill-card';
+          card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <strong style="font-size:15px;">${def.icon} ${def.name}</strong>
+            <span class="tabular" style="font-size:12px; font-weight:800; color:#b45309;">المستوى ${curLvl}/${def.maxLevel}</span>
+          </div>
+          <div style="font-size:12px; color:var(--ink-muted);">${def.desc}</div>`;
+
+          const pips = document.createElement('div');
+          pips.className = 'skill-pips';
+          for (let i = 0; i < def.maxLevel; i++) {
+            const p = document.createElement('div');
+            p.className = `skill-pip ${i < curLvl ? 'filled' : ''}`;
+            pips.appendChild(p);
+          }
+          card.appendChild(pips);
+
+          if (maxed) {
+            const maxBtn = makeBtn('مكتمل الحد الأقصى ✅', 'btn-secondary', () => {});
+            maxBtn.disabled = true;
+            card.appendChild(maxBtn);
+          } else {
+            const cost = getSkillCost(def, curLvl);
+            const canAfford = GameState.coins >= cost.coins && (GameState.xpStars || 0) >= cost.stars;
+            const btn = makeBtn(`ترقية (${cost.coins.toLocaleString('en-US')} ذهب · ${cost.stars} ⭐)`, 'btn-action', () => {
+              if (GameState.coins < cost.coins || (GameState.xpStars || 0) < cost.stars) {
+                SFX.error(); showToast('الذهب أو نجوم المهارة غير كافية!', 'warn'); return;
+              }
+              GameState.coins -= cost.coins;
+              GameState.xpStars -= cost.stars;
+              GameState.skills[def.id] = curLvl + 1;
+              SFX.levelUp();
+              logFarmEvent(`طوّرت مهارة "${def.name}" إلى المستوى ${curLvl + 1}`, def.icon);
+              showToast(`تمت ترقية "${def.name}" إلى المستوى ${curLvl + 1}!`, 'success');
+              updateHUD(); saveGame(); renderHouseModal();
+            });
+            btn.disabled = !canAfford;
+            card.appendChild(btn);
+          }
+          wrap.appendChild(card);
+        }
       } else {
+        const prof = GameState.profile || { farmName: 'مزرعة السعادة', avatar: '👨‍🌾' };
+        document.getElementById('house-farmer-display').textContent = `${prof.avatar} ${prof.farmName}`;
         document.getElementById('house-lvl').textContent = GameState.level;
         document.getElementById('house-land').textContent = `${GameState.unlockedSize}×${GameState.unlockedSize}`;
         document.getElementById('house-harvests').textContent = GameState.totalHarvests;
@@ -3881,6 +4449,58 @@
         if (rem <= 0) { giftBtn.disabled = false; giftBtn.textContent = 'استلام المكافأة الدورية (+75 ذهبية)'; }
         else { giftBtn.disabled = true; giftBtn.textContent = `المكافأة القادمة خلال ~${Math.ceil(rem / 3600000)} ساعة`; }
       }
+    }
+
+    // Onboarding & Farm Profile Modal
+    let selectedOnboardAvatar = '👨‍🌾';
+    function openOnboardingModal() {
+      ensureStateDefaults();
+      const prof = GameState.profile;
+      selectedOnboardAvatar = prof.avatar || '👨‍🌾';
+      document.getElementById('onboard-farm-name').value = prof.farmName || 'مزرعة السعادة';
+      const grid = document.getElementById('onboard-avatars');
+      grid.innerHTML = '';
+      for (const av of FARMER_AVATARS) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = `avatar-option ${av === selectedOnboardAvatar ? 'selected' : ''}`;
+        b.textContent = av;
+        b.onclick = () => {
+          selectedOnboardAvatar = av;
+          SFX.tap();
+          grid.querySelectorAll('.avatar-option').forEach(el => el.classList.toggle('selected', el.textContent === av));
+        };
+        grid.appendChild(b);
+      }
+      document.getElementById('modal-onboarding').classList.add('open');
+    }
+
+    // Notification Center & Farm Log Modal
+    function openNotificationsModal() {
+      ensureStateDefaults();
+      GameState.unreadNotifs = 0;
+      updateHUD();
+      saveGame();
+      const wrap = document.getElementById('notifications-list');
+      wrap.innerHTML = '';
+      if (!GameState.farmLog || GameState.farmLog.length === 0) {
+        wrap.innerHTML = '<div style="text-align:center; padding:24px; color:var(--ink-muted); font-weight:700;">لا توجد إشعارات في السجل حالياً.</div>';
+      } else {
+        const now = Date.now();
+        for (const entry of GameState.farmLog) {
+          const item = document.createElement('div');
+          item.className = 'log-item';
+          const agoMs = Math.max(1000, now - (entry.ts || now));
+          const agoText = agoMs < 60000 ? `منذ ${Math.floor(agoMs / 1000)} ث` : (agoMs < 3600000 ? `منذ ${Math.floor(agoMs / 60000)} د` : `منذ ${Math.floor(agoMs / 3600000)} س`);
+          item.innerHTML = `<div class="log-ico">${entry.icon || '🌾'}</div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:2px;">
+              <div style="font-size:13px; font-weight:800;">${entry.text}</div>
+              <div class="tabular" style="font-size:11px; color:var(--ink-muted);">${agoText}</div>
+            </div>`;
+          wrap.appendChild(item);
+        }
+      }
+      document.getElementById('modal-notifications').classList.add('open');
     }
 
     // Land Expansion Modal
@@ -4400,13 +5020,16 @@
               if (nestSp) drawSpriteAtTile(nestSp, drawX + 22 * Camera.zoom, drawY + 8 * Camera.zoom, 0.45);
             }
 
-            if (ent.type === 'house' && GameState.kitchen.state === 'cooking') {
-              if (now >= GameState.kitchen.readyAt) drawReadyBadge(drawX, drawY - 22 * Camera.zoom, 'الطبق جاهز!');
-              else {
-                const rec = KITCHEN_RECIPES.find(x => x.id === GameState.kitchen.recipeId);
-                const dur = rec ? rec.duration : 18000;
-                const rem = GameState.kitchen.readyAt - now;
-                drawProgressRing(drawX, drawY - 20 * Camera.zoom, 1 - rem / dur, '#fb923c', formatTime(rem));
+            if (ent.type === 'house') {
+              drawFarmSignpost(drawX + 44 * Camera.zoom, drawY + 14 * Camera.zoom);
+              if (GameState.kitchen.state === 'cooking') {
+                if (now >= GameState.kitchen.readyAt) drawReadyBadge(drawX, drawY - 22 * Camera.zoom, 'الطبق جاهز!');
+                else {
+                  const rec = KITCHEN_RECIPES.find(x => x.id === GameState.kitchen.recipeId);
+                  const dur = getCraftDuration(rec ? rec.duration : 18000);
+                  const rem = GameState.kitchen.readyAt - now;
+                  drawProgressRing(drawX, drawY - 20 * Camera.zoom, 1 - rem / dur, '#fb923c', formatTime(rem));
+                }
               }
             }
 
@@ -4427,9 +5050,10 @@
                 drawReadyBadge(drawX, drawY, `${PRODUCTS[outId].name}!`);
               } else if (ent.state === 'producing') {
                 const rem = ent.readyAt - now;
-                let dur = shopDef.duration;
-                if (shopDef.type === 'mill') dur = (MILL_RECIPES.find(m => m.id === (ent.recipeId || 'flour')) || MILL_RECIPES[0]).duration;
-                else if (shopDef.type === 'bakery') dur = (BAKERY_RECIPES.find(m => m.id === (ent.recipeId || 'bread')) || BAKERY_RECIPES[0]).duration;
+                let baseDur = shopDef.duration;
+                if (shopDef.type === 'mill') baseDur = (MILL_RECIPES.find(m => m.id === (ent.recipeId || 'flour')) || MILL_RECIPES[0]).duration;
+                else if (shopDef.type === 'bakery') baseDur = (BAKERY_RECIPES.find(m => m.id === (ent.recipeId || 'bread')) || BAKERY_RECIPES[0]).duration;
+                const dur = getCraftDuration(baseDur);
                 drawProgressRing(drawX, drawY, 1 - rem / dur, '#38bdf8', formatTime(rem));
               }
             } else if (shopDef && (shopDef.type === 'tree' || shopDef.type === 'auto_prod')) {
@@ -4459,6 +5083,24 @@
             drawSpriteAtTile(sp, pos.x, pos.y, entDef ? entDef.scale : 1.0);
             ctx.restore();
           }
+        }
+      }
+
+      // Pass 2.5: Living Butterflies over crops & meadow
+      if (!ws.isRaining && ws.nightAlpha < 0.28) {
+        const s = Camera.zoom;
+        for (const bf of Butterflies) {
+          const bp = tileToScreen(bf.r, bf.c);
+          const flap = Math.abs(Math.sin(perfNow * 0.02 + bf.phase));
+          const hover = Math.sin(perfNow * 0.006 + bf.phase) * 5 * s;
+          const by = bp.y - 18 * s + hover;
+          ctx.save();
+          ctx.fillStyle = bf.color;
+          ctx.beginPath();
+          ctx.ellipse(bp.x - 3 * s * flap, by, Math.max(1.5, 4.2 * s * flap), 3 * s, -0.4, 0, Math.PI * 2);
+          ctx.ellipse(bp.x + 3 * s * flap, by, Math.max(1.5, 4.2 * s * flap), 3 * s, 0.4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
         }
       }
 
@@ -4524,14 +5166,33 @@
         ctx.restore();
       }
 
-      // Pass 6: Floating +XP / +Coins FX
+      // Pass 5.5: Sky Birds gliding with ground shadows
+      if (!ws.isRaining) {
+        for (const bd of SkyBirds) {
+          const bx = bd.x * Camera.width, by = bd.y * Camera.height;
+          const flap = Math.sin(perfNow * 0.008 + bd.phase) * 5;
+          ctx.save();
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+          ctx.beginPath(); ctx.ellipse(bx + 18, by + 56, 8, 3, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = ws.nightAlpha > 0.25 ? '#cbd5e1' : '#331e0e';
+          ctx.lineWidth = 2; ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(bx - 9, by + flap);
+          ctx.quadraticCurveTo(bx - 4, by - 4, bx, by);
+          ctx.quadraticCurveTo(bx + 4, by - 4, bx + 9, by + flap);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      // Pass 6: Floating +XP / +Coins / Combo FX
       for (let i = FloatingFX.length - 1; i >= 0; i--) {
         const fx = FloatingFX[i];
         const age = perfNow - fx.createdAt;
         if (age >= fx.duration) { FloatingFX.splice(i, 1); continue; }
         const t = age / fx.duration;
         const pos = tileToScreen(fx.r, fx.c);
-        const y = pos.y - (44 + t * 44) * Camera.zoom;
+        const y = pos.y - (44 + (fx.oyOffset || 0) + t * 44) * Camera.zoom;
         ctx.save();
         ctx.globalAlpha = 1 - Math.pow(t, 1.8);
         ctx.font = `800 ${Math.round(14 * Math.max(0.85, Camera.zoom))}px Cairo, sans-serif`;
@@ -4546,6 +5207,24 @@
 
       ctx.restore();
       requestAnimationFrame(renderLoop);
+    }
+
+    function drawFarmSignpost(sx, sy) {
+      const s = Camera.zoom;
+      const prof = GameState.profile || { farmName: 'مزرعة السعادة', avatar: '👨‍🌾' };
+      const label = `${prof.avatar || '👨‍🌾'} ${prof.farmName || 'مزرعة السعادة'}`;
+      ctx.save();
+      ctx.fillStyle = '#5c3317';
+      ctx.fillRect(sx - 2 * s, sy - 20 * s, 4 * s, 22 * s);
+      ctx.font = `800 ${Math.round(10 * Math.max(0.75, s))}px Cairo, sans-serif`;
+      const bw = Math.max(66 * s, ctx.measureText(label).width + 14 * s);
+      const bh = 20 * s;
+      const bx = sx - bw * 0.5, by = sy - 34 * s;
+      ctx.fillStyle = '#b47138'; ctx.strokeStyle = '#451a03'; ctx.lineWidth = Math.max(1.2, 1.8 * s);
+      ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 5 * s); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fffbeb'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(label, sx, by + bh * 0.5 + 0.5 * s);
+      ctx.restore();
     }
 
     /* ============================================================
@@ -4602,7 +5281,7 @@
 
       if (isPanning && pointers.size === 1) {
         const dx = e.clientX - panStartX, dy = e.clientY - panStartY;
-        if (Math.hypot(dx, dy) > 8) { panMoved = true; canvas.classList.add('dragging'); }
+        if (Math.hypot(dx, dy) > 8) { panMoved = true; canvas.classList.add('dragging'); closeRadialMenu(); }
         if (panMoved) { Camera.x = camStartX + dx; Camera.y = camStartY + dy; }
       }
     });
@@ -4614,8 +5293,14 @@
       if (wasTap) {
         const hit = screenToTile(e.clientX, e.clientY);
         if (hit) handleTileAction(hit.r, hit.c, false);
-        else closeContextCard();
+        else { closeContextCard(); closeRadialMenu(); }
       }
+    });
+
+    canvas.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const hit = screenToTile(e.clientX, e.clientY);
+      if (hit && isTileUnlocked(hit.r, hit.c)) openRadialMenu(hit.r, hit.c);
     });
 
     canvas.addEventListener('pointercancel', (e) => {
@@ -4624,6 +5309,7 @@
 
     canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
+      closeRadialMenu();
       applyZoom(Camera.zoom * (e.deltaY < 0 ? 1.1 : 0.9), e.clientX, e.clientY);
     }, { passive: false });
 
@@ -4640,6 +5326,10 @@
        ============================================================ */
     function updateHUD() {
       const now = Date.now();
+      const prof = GameState.profile || { farmName: 'مزرعة السعادة', avatar: '👨‍🌾' };
+      document.getElementById('hud-farmer-avatar').textContent = prof.avatar || '👨‍🌾';
+      document.getElementById('hud-farm-name-label').textContent = prof.farmName || 'المستوى';
+      document.getElementById('hud-profile-card').title = `${prof.avatar || '👨‍🌾'} ${prof.farmName || 'مزرعة السعادة'}`;
       document.getElementById('hud-level').textContent = GameState.level;
       const needed = getXpNeeded(GameState.level);
       document.getElementById('hud-xp-text').textContent = `${GameState.xp}/${needed}`;
@@ -4647,8 +5337,14 @@
       document.getElementById('hud-coins').textContent = GameState.coins.toLocaleString('en-US');
       document.getElementById('hud-dinars').textContent = GameState.dinars.toLocaleString('en-US');
       document.getElementById('hud-water').textContent = `${GameState.water}/${GameState.maxWater}`;
-      document.getElementById('hud-barn-count').textContent = `(${getBarnUsed()}/${getMaxBarnCapacity()})`;
+      document.getElementById('hud-barn-count').textContent = `(${getBarnUsed()}/${formatBarnCap(getMaxBarnCapacity())})`;
       document.getElementById('hud-land-size').textContent = `${GameState.unlockedSize}×${GameState.unlockedSize}`;
+      const nb = document.getElementById('notif-unread-badge');
+      if (nb) {
+        const unread = GameState.unreadNotifs || 0;
+        nb.style.display = unread > 0 ? 'inline-flex' : 'none';
+        nb.textContent = unread;
+      }
 
       const ordReady = countReadyOrdersAndQuests();
       const ob = document.getElementById('orders-ready-badge');
@@ -4832,7 +5528,8 @@
 
     function openBarnModal() { renderBarnGrid(); document.getElementById('modal-barn').classList.add('open'); }
     function renderBarnGrid() {
-      document.getElementById('barn-capacity-label').textContent = `${getBarnUsed()} / ${getMaxBarnCapacity()}`;
+      const cap = getMaxBarnCapacity();
+      document.getElementById('barn-capacity-label').textContent = cap === Infinity ? `${getBarnUsed()} / غير محدود (∞)` : `${getBarnUsed()} / ${cap}`;
       const grid = document.getElementById('barn-grid'); grid.innerHTML = '';
       const entries = Object.entries(GameState.barn).filter(([, q]) => q > 0);
       if (entries.length === 0) {
@@ -4985,17 +5682,35 @@
     document.getElementById('btn-shop').addEventListener('click', () => { SFX.tap(); openShopModal(); });
     document.getElementById('btn-barn').addEventListener('click', () => { SFX.tap(); openBarnModal(); });
     document.getElementById('btn-inspector').addEventListener('click', () => { SFX.tap(); openInspectorModal(); });
+    document.getElementById('btn-notifications').addEventListener('click', () => { SFX.tap(); openNotificationsModal(); });
     document.getElementById('btn-settings').addEventListener('click', () => { SFX.tap(); document.getElementById('modal-settings').classList.add('open'); });
+    document.getElementById('btn-clear-notifs').addEventListener('click', () => {
+      GameState.farmLog = []; GameState.unreadNotifs = 0; saveGame(); updateHUD(); openNotificationsModal();
+    });
+    document.getElementById('btn-edit-profile').addEventListener('click', () => { closeModal('modal-house'); openOnboardingModal(); });
+    document.getElementById('btn-onboard-save').addEventListener('click', () => {
+      const rawName = (document.getElementById('onboard-farm-name').value || '').trim();
+      GameState.profile = {
+        farmName: rawName || 'مزرعة السعادة',
+        avatar: selectedOnboardAvatar || '👨‍🌾',
+        onboarded: true
+      };
+      SFX.levelUp();
+      logFarmEvent(`تم اعتماد اسم المزرعة: "${GameState.profile.farmName}"`, GameState.profile.avatar);
+      saveGame(); updateHUD(); closeModal('modal-onboarding');
+      showToast(`أهلاً بك في ${GameState.profile.farmName}!`, 'success');
+    });
 
     document.getElementById('btn-sound').addEventListener('click', () => {
       SFX.muted = !SFX.muted; localStorage.setItem(MUTE_KEY, SFX.muted ? '1' : '0'); syncSoundIcons();
       if (!SFX.muted) SFX.tap();
     });
 
-    document.getElementById('zoom-in').addEventListener('click', () => applyZoom(Camera.zoom * 1.18, Camera.width / 2, Camera.height / 2));
-    document.getElementById('zoom-out').addEventListener('click', () => applyZoom(Camera.zoom * 0.85, Camera.width / 2, Camera.height / 2));
-    document.getElementById('zoom-reset').addEventListener('click', () => Camera.center());
+    document.getElementById('zoom-in').addEventListener('click', () => { closeRadialMenu(); applyZoom(Camera.zoom * 1.18, Camera.width / 2, Camera.height / 2); });
+    document.getElementById('zoom-out').addEventListener('click', () => { closeRadialMenu(); applyZoom(Camera.zoom * 0.85, Camera.width / 2, Camera.height / 2); });
+    document.getElementById('zoom-reset').addEventListener('click', () => { closeRadialMenu(); Camera.center(); });
     document.getElementById('context-close').addEventListener('click', closeContextCard);
+    document.getElementById('radial-close').addEventListener('click', closeRadialMenu);
 
     document.querySelectorAll('[data-close]').forEach((btn) => btn.addEventListener('click', () => closeModal(btn.dataset.close)));
     document.querySelectorAll('.modal-backdrop').forEach((bd) => bd.addEventListener('click', (e) => { if (e.target === bd) bd.classList.remove('open'); }));
@@ -5249,7 +5964,17 @@
     });
 
     document.getElementById('btn-vip-gift').addEventListener('click', () => {
+      const pinEl = document.getElementById('vip-pin-input');
+      const entered = (pinEl ? pinEl.value : '').trim();
+      if (entered !== VIP_PIN_CODE) {
+        SFX.error();
+        if (pinEl) { pinEl.value = ''; pinEl.focus(); }
+        showToast('الرمز السري غير صحيح!', 'warn');
+        return;
+      }
+      if (pinEl) pinEl.value = '';
       SFX.levelUp();
+      logFarmEvent('تم فتح صندوق هدايا VIP (+50,000 ذهب و +500 دينار)', '🎁');
       awardRewards(50000, 0, null, null, '', 500);
       showToast('🎁 تم استلام هدية VIP: +50,000 ذهب و +500 دينار!', 'success');
     });
@@ -5325,10 +6050,13 @@
        16. BOOTSTRAP
        ============================================================ */
     async function boot() {
+      const splashFill = document.getElementById('splash-progress-fill');
+      if (splashFill) splashFill.style.width = '28%';
       const hadSave = loadGame();
       Camera.resize();
       Camera.center();
       window.addEventListener('resize', () => Camera.resize());
+      if (splashFill) splashFill.style.width = '58%';
 
       try {
         await SpriteEngine.loadInitial(34);
@@ -5341,10 +6069,11 @@
         return;
       }
 
+      if (splashFill) splashFill.style.width = '100%';
       buildSeedStrip();
       updateHUD();
       initPWA();
-      document.getElementById('loading-screen').classList.add('hidden');
+      setTimeout(() => document.getElementById('loading-screen').classList.add('hidden'), 260);
 
       if (hadSave) {
         const offlineSec = Math.floor((Date.now() - (GameState.lastSavedAt || Date.now())) / 1000);
@@ -5352,7 +6081,9 @@
       } else {
         saveGame();
       }
-      if (GameState.loginStreak.lastClaimDate !== new Date().toDateString()) {
+      if (!GameState.profile || !GameState.profile.onboarded) {
+        setTimeout(() => openOnboardingModal(), 520);
+      } else if (GameState.loginStreak.lastClaimDate !== new Date().toDateString()) {
         setTimeout(() => showToast('🎁 مكافأة الدخول اليومي وعجلة الحظ جاهزة في الأعلى!', 'success'), 900);
       }
 
