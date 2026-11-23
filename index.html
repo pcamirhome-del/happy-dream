@@ -77,6 +77,7 @@
       overflow: hidden;
       background: #5dae42;
       transform-origin: center center;
+      isolation: isolate;
     }
     body.rotated-landscape #game-stage {
       width: 100dvh;
@@ -84,14 +85,19 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(90deg);
+      isolation: isolate;
     }
 
     .tabular { font-variant-numeric: tabular-nums; }
 
     #game-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
       display: block;
       width: 100%;
       height: 100%;
+      transform: translateZ(0);
       cursor: grab;
     }
     #game-canvas.dragging { cursor: grabbing; }
@@ -99,9 +105,11 @@
 
     /* Loading & Upload Fallback Screen */
     #loading-screen {
-      position: fixed;
+      position: absolute;
       inset: 0;
       z-index: 200;
+      transform: translate3d(0, 0, 3px);
+      backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -137,11 +145,15 @@
 
     /* Two-Row Top HUD (Rustic Wood & Parchment) */
     .top-hud {
-      position: fixed;
+      position: absolute;
       top: max(6px, env(safe-area-inset-top));
       left: 8px;
       right: 8px;
-      z-index: 26;
+      z-index: 50;
+      transform: translate3d(0, 0, 1px);
+      backface-visibility: hidden;
+      opacity: 1 !important;
+      visibility: visible !important;
       display: flex;
       flex-direction: column;
       gap: 5px;
@@ -184,6 +196,7 @@
       padding: 5px 10px;
       box-shadow: 0 3px 0 #5c3317, 0 6px 14px rgba(34, 18, 6, 0.22);
       min-height: 40px;
+      pointer-events: auto;
     }
     #hud-profile-card {
       position: relative;
@@ -279,6 +292,7 @@
       font-size: 12px;
       font-weight: 800;
       cursor: pointer;
+      pointer-events: auto;
       box-shadow: 0 3px 0 #5c3317, 0 5px 12px rgba(34, 18, 6, 0.2);
       transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
       white-space: nowrap;
@@ -344,13 +358,18 @@
 
     /* Zoom Controls */
     .zoom-controls {
-      position: fixed;
+      position: absolute;
       left: 12px;
       bottom: 94px;
-      z-index: 18;
+      z-index: 50;
+      transform: translate3d(0, 0, 1px);
+      backface-visibility: hidden;
+      opacity: 1 !important;
+      visibility: visible !important;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      pointer-events: auto;
     }
     .zoom-btn {
       width: 40px;
@@ -371,12 +390,13 @@
 
     /* Mode Banner */
     .mode-banner {
-      position: fixed;
+      position: absolute;
       bottom: calc(max(8px, env(safe-area-inset-bottom)) + 66px);
       top: auto;
       left: 50%;
-      transform: translateX(-50%);
-      z-index: 25;
+      transform: translate3d(-50%, 0, 1px);
+      backface-visibility: hidden;
+      z-index: 55;
       display: none;
       align-items: center;
       gap: 10px;
@@ -451,10 +471,10 @@
     .hamburger-btn.open .hamburger-lines span:nth-child(3) { transform: translateY(-4.8px) rotate(-45deg); }
 
     .hamburger-dropdown {
-      position: fixed;
+      position: absolute;
       top: 84px;
       left: 10px;
-      z-index: 45;
+      z-index: 80;
       width: min(330px, 86%);
       max-height: calc(100% - 98px);
       overflow-y: auto;
@@ -473,14 +493,16 @@
       gap: 6px;
       opacity: 0;
       pointer-events: none;
-      transform: translateY(-8px) scale(0.96);
+      backface-visibility: hidden;
+      transform: translate3d(0, -8px, 1px) scale(0.96);
       transform-origin: top left;
       transition: opacity 0.18s ease, transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.05);
     }
     .hamburger-dropdown.open {
-      opacity: 1;
+      opacity: 1 !important;
+      visibility: visible !important;
       pointer-events: auto;
-      transform: translateY(0) scale(1);
+      transform: translate3d(0, 0, 1px) scale(1);
     }
     .menu-main-list {
       display: flex;
@@ -650,11 +672,15 @@
 
     /* Bottom Dock Toolbar (Ultra-Clean 5 Core Tools, Zero Horizontal Scrollbars) */
     .bottom-dock {
-      position: fixed;
+      position: absolute;
       bottom: max(8px, env(safe-area-inset-bottom));
       left: 50%;
-      transform: translateX(-50%);
-      z-index: 22;
+      transform: translate3d(-50%, 0, 1px);
+      backface-visibility: hidden;
+      z-index: 50;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -758,10 +784,12 @@
 
     /* Tile Quick Context Card (Parchment) */
     .context-card {
-      position: fixed;
+      position: absolute;
       bottom: 84px;
       right: 12px;
-      z-index: 24;
+      z-index: 55;
+      transform: translate3d(0, 0, 1px);
+      backface-visibility: hidden;
       display: none;
       flex-direction: column;
       gap: 8px;
@@ -774,7 +802,7 @@
       padding: 12px 14px;
       box-shadow: var(--shadow-soft);
     }
-    .context-card.visible { display: flex; }
+    .context-card.visible { display: flex; opacity: 1 !important; visibility: visible !important; }
     .context-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .context-title-wrap { display: flex; align-items: center; gap: 8px; }
     .context-thumb {
@@ -804,10 +832,12 @@
 
     /* Toast & Offline Banner */
     .toast-stack {
-      position: fixed;
+      position: absolute;
       top: 56px;
       right: 12px;
-      z-index: 60;
+      z-index: 90;
+      transform: translate3d(0, 0, 1px);
+      backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -833,11 +863,12 @@
     }
 
     .offline-banner {
-      position: fixed;
+      position: absolute;
       bottom: 78px;
       left: 50%;
-      transform: translateX(-50%);
-      z-index: 50;
+      transform: translate3d(-50%, 0, 1px);
+      backface-visibility: hidden;
+      z-index: 85;
       display: none;
       align-items: center;
       gap: 8px;
@@ -854,9 +885,11 @@
 
     /* Modal System (Rustic Wooden Plank Header + Parchment Body) */
     .modal-backdrop {
-      position: fixed;
+      position: absolute;
       inset: 0;
       z-index: 120;
+      transform: translate3d(0, 0, 2px);
+      backface-visibility: hidden;
       display: none;
       align-items: center;
       justify-content: center;
@@ -865,7 +898,7 @@
       padding: 8px;
       touch-action: pan-y;
     }
-    .modal-backdrop.open { display: flex; }
+    .modal-backdrop.open { display: flex; opacity: 1 !important; visibility: visible !important; }
     .modal-panel,
     .modal-panel.narrow {
       background: var(--surface-parchment);
@@ -1433,21 +1466,23 @@
 
     /* Smart Quick-Action Radial Menu */
     .radial-menu {
-      position: fixed;
-      z-index: 28;
+      position: absolute;
+      z-index: 60;
       width: 156px;
       height: 156px;
       margin-left: -78px;
       margin-top: -78px;
       pointer-events: none;
       opacity: 0;
-      transform: scale(0.75);
+      backface-visibility: hidden;
+      transform: translate3d(0, 0, 1px) scale(0.75);
       transition: opacity 0.16s ease, transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.15);
     }
     .radial-menu.open {
       pointer-events: auto;
-      opacity: 1;
-      transform: scale(1);
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translate3d(0, 0, 1px) scale(1);
     }
     .radial-ring {
       position: absolute; inset: 14px; border-radius: 50%;
@@ -8532,8 +8567,46 @@
     });
 
     /* ============================================================
-       15. PWA INSTALL PROMPT & OFFLINE CONNECTIVITY
+       15. PWA INSTALL PROMPT, AUTO-UPDATE & OFFLINE CONNECTIVITY
        ============================================================ */
+    if ('serviceWorker' in navigator) {
+      let refreshing = false;
+      let hadController = Boolean(navigator.serviceWorker.controller);
+
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!hadController) {
+          hadController = true;
+          return;
+        }
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+
+      const checkForSWUpdate = () => {
+        navigator.serviceWorker.getRegistration()
+          .then((registration) => {
+            if (registration) {
+              return registration.update();
+            }
+          })
+          .catch(() => {});
+      };
+
+      navigator.serviceWorker.ready
+        .then((registration) => {
+          return registration.update();
+        })
+        .catch(() => {});
+
+      window.addEventListener('load', checkForSWUpdate);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          checkForSWUpdate();
+        }
+      });
+    }
+
     let deferredInstallPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -8547,6 +8620,14 @@
     function initPWA() {
       if (pwaInitialized) return;
       pwaInitialized = true;
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration()
+          .then((registration) => {
+            if (registration) return registration.update();
+          })
+          .catch(() => {});
+      }
 
       const updateOnline = () => document.getElementById('offline-banner').classList.toggle('visible', !navigator.onLine);
       window.addEventListener('online', updateOnline);
