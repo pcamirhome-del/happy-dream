@@ -101,7 +101,7 @@
     #loading-screen {
       position: fixed;
       inset: 0;
-      z-index: 100;
+      z-index: 200;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -452,23 +452,25 @@
 
     .hamburger-dropdown {
       position: fixed;
-      top: 92px;
+      top: 84px;
       left: 10px;
       z-index: 45;
-      width: min(370px, 90%);
-      max-height: 76%;
+      width: min(330px, 86%);
+      max-height: calc(100% - 98px);
       overflow-y: auto;
       overflow-x: hidden;
+      touch-action: pan-y;
+      overscroll-behavior: contain;
       direction: rtl;
       background: var(--surface-parchment);
       border: 3px solid #6b3b19;
       outline: 2px solid #eab308;
-      border-radius: 16px;
-      padding: 8px;
+      border-radius: 14px;
+      padding: 7px;
       box-shadow: 0 16px 40px rgba(24, 12, 4, 0.44);
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 6px;
       opacity: 0;
       pointer-events: none;
       transform: translateY(-8px) scale(0.96);
@@ -483,25 +485,25 @@
     .menu-main-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
     .menu-cat-btn {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: 12px;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
       border: 2px solid #eab308;
       background: linear-gradient(180deg, #985b2c 0%, #6d3b17 100%);
       color: #fffdf6;
       font-family: inherit;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       cursor: pointer;
       text-align: right;
-      box-shadow: 0 3px 0 #3f210b;
+      box-shadow: 0 2px 0 #3f210b;
       transition: transform 0.1s ease, filter 0.15s ease;
     }
     .menu-cat-btn:hover { filter: brightness(1.06); }
@@ -843,35 +845,38 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      z-index: 80;
+      z-index: 120;
       display: none;
       align-items: center;
       justify-content: center;
       background: rgba(22, 12, 5, 0.62);
       backdrop-filter: blur(4px);
-      padding: 12px;
+      padding: 8px;
+      touch-action: pan-y;
     }
     .modal-backdrop.open { display: flex; }
-    .modal-panel {
+    .modal-panel,
+    .modal-panel.narrow {
       background: var(--surface-parchment);
-      border: 4px solid #6b3b19;
+      border: 3.5px solid #6b3b19;
       outline: 2px solid #eab308;
-      border-radius: 22px;
-      width: 100%;
-      max-width: 820px;
-      max-height: 88%;
+      border-radius: 16px;
+      width: min(92vw, 620px);
+      max-width: 620px;
+      height: min(80vh, 460px);
+      max-height: 82vh;
       display: flex;
       flex-direction: column;
       box-shadow: 0 20px 56px rgba(0, 0, 0, 0.42);
       overflow: hidden;
+      touch-action: pan-y;
     }
-    .modal-panel.narrow { max-width: 500px; }
     .modal-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 13px 18px;
+      gap: 8px;
+      padding: 8px 12px;
       flex-shrink: 0;
       overflow: hidden;
       border-bottom: 3px solid #4a270e;
@@ -887,15 +892,15 @@
       color: #fffaf0;
       text-shadow: 0 2px 3px rgba(0,0,0,0.45);
     }
-    .modal-title { margin: 0; font-size: 17px; font-weight: 800; }
+    .modal-title { margin: 0; font-size: clamp(13px, 1.6vw, 15px); font-weight: 800; line-height: 1.3; }
     .modal-close {
-      min-width: 36px;
-      min-height: 36px;
-      border-radius: 10px;
+      min-width: 28px;
+      min-height: 28px;
+      border-radius: 8px;
       border: 2px solid #facc15;
       background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
       color: #fff;
-      font-size: 19px;
+      font-size: 15px;
       font-weight: 800;
       cursor: pointer;
       flex-shrink: 0;
@@ -903,27 +908,39 @@
     }
     .modal-close:active { transform: translateY(2px); box-shadow: none; }
     .modal-body {
-      padding: 14px 16px;
+      padding: 8px;
       flex: 1 1 auto;
-      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 220px;
       overflow-y: auto;
       overflow-x: hidden;
+      opacity: 1;
+      visibility: visible;
+      touch-action: pan-y;
+      overscroll-behavior: contain;
       scrollbar-width: none;
       -ms-overflow-style: none;
       -webkit-overflow-scrolling: touch;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      gap: 6px;
+    }
+    .modal-body > * {
+      flex-shrink: 0;
     }
 
     .seg-tabs,
-    .modal-tabs {
+    .modal-tabs,
+    #menu-modal-tabs,
+    #menu-sub-tabs {
+      flex-shrink: 0;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
       gap: 4px;
       padding: 6px;
+      min-height: 36px;
+      width: 100%;
       height: auto !important;
       max-height: none !important;
       overflow: hidden !important;
@@ -932,12 +949,38 @@
       background: #e9d4a6;
       border: 2px solid #9e6030;
       border-radius: 13px;
-      flex-shrink: 0;
+    }
+    #menu-modal-body,
+    #menu-sub-content,
+    .tab-pane.active {
+      flex: 1 1 auto;
+      flex-shrink: 1;
+      display: block !important;
+      min-height: 160px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: 100%;
+    }
+    #menu-modal-body > * + *,
+    #menu-sub-content > * + * {
+      margin-top: 6px;
+    }
+    .modal-body > .items-grid,
+    #orders-view-orders, #orders-view-quests,
+    #bank-view-exchange, #bank-view-deposits,
+    #house-view-kitchen, #house-view-skills, #house-view-info,
+    #dw-view-streak, #dw-view-wheel,
+    #insp-view-mapped, #insp-view-extracted, #insp-view-sheet {
+      flex: 1 1 auto;
+      flex-shrink: 1;
+      min-height: 160px;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .seg-tab {
       flex: 0 1 auto;
       min-height: 28px;
-      padding: 5px 8px;
+      padding: 4px 8px;
       border: 1px solid transparent;
       border-radius: 9px;
       background: transparent;
@@ -959,34 +1002,37 @@
 
     .items-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+      gap: 6px;
     }
     .item-card {
       position: relative;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 6px;
       background: linear-gradient(180deg, #fffdf8 0%, #faefd6 100%);
       border: 2px solid #b88a55;
-      border-radius: 15px;
-      padding: 12px;
-      box-shadow: 0 3px 0 rgba(124, 71, 32, 0.25);
+      border-radius: 11px;
+      padding: 6px 8px;
+      min-width: 0;
+      font-size: clamp(11px, 1.4vw, 14px);
+      box-shadow: 0 2px 0 rgba(124, 71, 32, 0.25);
     }
     .item-preview {
-      height: 76px;
+      height: 40px;
       background: radial-gradient(circle, #fffdf7 0%, #efe1be 100%);
       border: 1px solid #d4b483;
-      border-radius: 11px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 6px;
+      padding: 3px;
     }
-    .item-preview canvas { max-width: 100%; max-height: 62px; object-fit: contain; }
-    .item-name { font-size: 14px; font-weight: 800; margin: 0; }
-    .item-meta { font-size: 12px; color: var(--ink-muted); line-height: 1.48; font-weight: 600; }
+    .item-preview canvas { max-width: 100%; max-height: 34px; object-fit: contain; }
+    .item-name { font-size: clamp(11px, 1.4vw, 14px); font-weight: 800; margin: 0; line-height: 1.25; }
+    .item-meta { font-size: clamp(10.5px, 1.25vw, 12.5px); color: var(--ink-muted); line-height: 1.32; font-weight: 600; }
 
     .badge-surge {
       display: inline-flex;
@@ -995,10 +1041,10 @@
       background: #dcfce7;
       border: 1px solid #16a34a;
       color: #15803d;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 8px;
+      padding: 2px 6px;
+      border-radius: 7px;
     }
     .badge-hot {
       display: inline-flex;
@@ -1007,32 +1053,34 @@
       background: #fef3c7;
       border: 1.5px solid #f59e0b;
       color: #b45309;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 8px;
+      padding: 2px 6px;
+      border-radius: 7px;
     }
 
     .order-card {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;
       background: linear-gradient(180deg, #fffdf8 0%, #faefd6 100%);
       border: 2px solid #b88a55;
-      border-radius: 15px;
-      padding: 14px;
-      box-shadow: 0 3px 0 rgba(124, 71, 32, 0.22);
+      border-radius: 11px;
+      padding: 6px 8px;
+      min-width: 0;
+      font-size: clamp(11px, 1.4vw, 14px);
+      box-shadow: 0 2px 0 rgba(124, 71, 32, 0.22);
     }
-    .order-req-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .order-req-list { display: flex; flex-wrap: wrap; gap: 5px; }
     .order-req-item {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       background: var(--surface-warm);
       border: 1.5px solid var(--border-wood);
-      border-radius: 10px;
-      padding: 5px 9px;
-      font-size: 12px;
+      border-radius: 8px;
+      padding: 3px 7px;
+      font-size: 11px;
       font-weight: 800;
     }
     .order-req-item.ready {
@@ -1040,26 +1088,31 @@
       border-color: #16a34a;
       color: #14532d;
     }
-    .order-req-item canvas { width: 22px; height: 22px; object-fit: contain; }
+    .order-req-item canvas { width: 18px; height: 18px; object-fit: contain; }
 
-    /* Tactile 3D Golden-Bordered Buttons */
+    /* Tactile 3D Golden-Bordered Buttons (Responsive Phone & Desktop) */
     .btn-action {
-      min-height: 40px;
-      padding: 7px 14px;
-      border-radius: 11px;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 8px;
       border: 2px solid #fde047;
       background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
       color: #fff;
       font-family: inherit;
-      font-size: 13px;
+      font-size: clamp(11px, 1.3vw, 13px);
       font-weight: 800;
+      line-height: 1.2;
       cursor: pointer;
       white-space: nowrap;
-      box-shadow: 0 3px 0 #14532d;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      box-shadow: 0 2px 0 #14532d;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
     .btn-action:hover:not(:disabled) { filter: brightness(1.06); }
-    .btn-action:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #14532d; }
+    .btn-action:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
     .btn-action:disabled {
       background: #d6cbb5;
       border-color: #b8ad96;
@@ -1068,21 +1121,26 @@
       cursor: not-allowed;
     }
     .btn-dinar {
-      min-height: 40px;
-      padding: 7px 14px;
-      border-radius: 11px;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 8px;
       border: 2px solid #bae6fd;
       background: linear-gradient(180deg, #0ea5e9 0%, #0369a1 100%);
       color: #fff;
       font-family: inherit;
-      font-size: 13px;
+      font-size: clamp(11px, 1.3vw, 13px);
       font-weight: 800;
+      line-height: 1.2;
       cursor: pointer;
       white-space: nowrap;
-      box-shadow: 0 3px 0 #0c4a6e;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      box-shadow: 0 2px 0 #0c4a6e;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
-    .btn-dinar:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #0c4a6e; }
+    .btn-dinar:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
     .btn-dinar:disabled {
       background: #cbd5e1;
       border-color: #94a3b8;
@@ -1091,52 +1149,68 @@
       cursor: not-allowed;
     }
     .btn-gold {
-      min-height: 40px;
-      padding: 7px 14px;
-      border-radius: 11px;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 8px;
       border: 2px solid #fef08a;
       background: linear-gradient(180deg, #facc15 0%, #d97706 100%);
       color: #451a03;
       font-family: inherit;
-      font-size: 13px;
+      font-size: clamp(11px, 1.3vw, 13px);
       font-weight: 800;
+      line-height: 1.2;
       cursor: pointer;
       white-space: nowrap;
-      box-shadow: 0 3px 0 #92400e;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      box-shadow: 0 2px 0 #92400e;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
-    .btn-gold:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #92400e; }
+    .btn-gold:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
     .btn-gold:disabled { opacity: 0.5; box-shadow: none; cursor: not-allowed; }
     .btn-secondary {
-      min-height: 40px;
-      padding: 7px 12px;
-      border-radius: 11px;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 8px;
       border: 2px solid #9e6030;
       background: linear-gradient(180deg, #fffaf0 0%, #ebd4a6 100%);
       color: var(--ink-primary);
       font-family: inherit;
-      font-size: 13px;
+      font-size: clamp(11px, 1.3vw, 13px);
       font-weight: 800;
+      line-height: 1.2;
       cursor: pointer;
       white-space: nowrap;
-      box-shadow: 0 3px 0 #6b3b19;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      box-shadow: 0 2px 0 #6b3b19;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
-    .btn-secondary:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #6b3b19; }
+    .btn-secondary:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
     .btn-danger {
-      min-height: 40px;
-      padding: 7px 12px;
-      border-radius: 11px;
+      min-height: 30px;
+      padding: 4px 10px;
+      border-radius: 8px;
       border: 2px solid #fecaca;
       background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
       color: #fff;
       font-family: inherit;
-      font-size: 13px;
+      font-size: clamp(11px, 1.3vw, 13px);
       font-weight: 800;
+      line-height: 1.2;
       cursor: pointer;
-      box-shadow: 0 3px 0 #7f1d1d;
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      box-shadow: 0 2px 0 #7f1d1d;
     }
-    .btn-danger:active { transform: translateY(2px); box-shadow: 0 1px 0 #7f1d1d; }
+    .btn-danger:active { transform: translateY(2px); box-shadow: none; }
 
     /* Daily Streak Grid & Wheel */
     .streak-grid {
@@ -1253,48 +1327,48 @@
     @media (max-width: 950px), (max-height: 540px) {
       .modal-backdrop { padding: 6px; }
       .modal-panel, .modal-panel.narrow {
-        width: 85vw;
-        max-width: 560px;
+        width: min(92vw, 620px);
+        max-width: 620px;
+        height: min(80vh, 460px);
         max-height: 82vh;
-        border-radius: 16px;
+        border-radius: 14px;
         border-width: 3px;
-        font-size: 0.85rem;
       }
       .modal-head { padding: 8px 12px; }
-      .modal-title { font-size: 14px; }
-      .modal-close { min-width: 30px; min-height: 30px; font-size: 16px; }
-      .modal-body { padding: 10px 12px; gap: 9px; }
-      .seg-tabs, .modal-tabs, .subpanel-tabs {
-        padding: 6px;
+      .modal-close { min-width: 26px; min-height: 26px; font-size: 14px; }
+      .modal-body { padding: 8px; gap: 6px; min-height: 220px; opacity: 1; visibility: visible; }
+      .seg-tabs, .modal-tabs, .subpanel-tabs, #menu-modal-tabs, #menu-sub-tabs {
+        padding: 4px;
         gap: 4px;
+        min-height: 36px;
+        width: 100%;
         height: auto !important;
         max-height: none !important;
         overflow: hidden !important;
         justify-content: center;
       }
       .seg-tab, .subpanel-tab, .subpanel-tab-btn {
-        min-height: 28px;
-        padding: 5px 8px;
-        font-size: 11px;
+        min-height: 26px;
+        padding: 4px 7px;
+        font-size: 10.5px;
         white-space: nowrap;
       }
-      .items-grid { grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 8px; }
-      .item-card { padding: 8px; gap: 5px; border-radius: 12px; }
-      .item-preview { height: 52px; padding: 4px; }
-      .item-preview canvas { max-height: 44px; }
-      .item-name { font-size: 12px; }
-      .item-meta { font-size: 10.8px; line-height: 1.35; }
-      .order-card { padding: 9px 11px; gap: 7px; border-radius: 12px; }
-      .btn-action, .btn-dinar, .btn-gold, .btn-secondary, .btn-danger {
-        min-height: 33px; padding: 5px 9px; font-size: 11px; border-radius: 9px;
+      .items-grid { grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 6px; }
+      .item-card, .order-card, .skill-card { padding: 6px 8px; gap: 6px; border-radius: 10px; }
+      .item-preview { height: 38px; padding: 3px; border-radius: 8px; }
+      .item-preview canvas { max-height: 32px; }
+      select.form-select, input.form-input {
+        min-height: 32px;
+        padding: 4px 8px;
+        font-size: 11.5px;
       }
     }
     body.rotated-landscape .modal-panel,
     body.rotated-landscape .modal-panel.narrow {
-      width: 85%;
-      max-width: 560px;
+      width: min(90vh, 620px);
+      max-width: 620px;
+      height: min(80vw, 460px);
       max-height: 82%;
-      font-size: 0.85rem;
     }
 
     @media (max-width: 720px) {
@@ -1410,11 +1484,12 @@
     .skill-card {
       background: linear-gradient(180deg, #fffaf0 0%, #f5e6c8 100%);
       border: 2px solid var(--border-wood);
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 11px;
+      padding: 6px 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
+      font-size: clamp(11px, 1.4vw, 14px);
       box-shadow: 0 2px 0 #c9a777;
     }
     .skill-pips { display: flex; gap: 4px; align-items: center; }
@@ -1835,7 +1910,7 @@
 
   <!-- Sprite Inspector / Mapper Modal (Multi-Pack) -->
   <div id="modal-inspector" class="modal-backdrop">
-    <div class="modal-panel" style="max-width: 920px;">
+    <div class="modal-panel">
       <div class="modal-head">
         <h3 class="modal-title">مفتش الصور ومُعيّن الرسومات (متعدد الحزم)</h3>
         <button class="modal-close" data-close="modal-inspector" type="button">×</button>
@@ -2250,7 +2325,7 @@
       </div>
       <div class="modal-body">
         <div id="menu-modal-tabs" class="seg-tabs"></div>
-        <div id="menu-modal-body" style="display:flex; flex-direction:column; gap:10px;"></div>
+        <div id="menu-modal-body"></div>
       </div>
     </div>
   </div>
@@ -4855,7 +4930,13 @@
 
     // Farm Bank Modal (Exchange + 1h/6h Deposits + Market Surge Ticker)
     let activeBankTab = 'exchange';
-    function openBankModal() { ensureStateDefaults(); renderBankModal(); document.getElementById('modal-bank').classList.add('open'); }
+    function openBankModal() {
+      ensureStateDefaults();
+      if (activeBankTab !== 'exchange' && activeBankTab !== 'deposits') activeBankTab = 'exchange';
+      document.querySelectorAll('[data-bank-tab]').forEach(t => t.classList.toggle('active', t.dataset.bankTab === activeBankTab));
+      renderBankModal();
+      document.getElementById('modal-bank').classList.add('open');
+    }
     function countMaturedDeposits() {
       const now = Date.now();
       return (GameState.bankDeposits || []).filter(d => now >= d.maturesAt).length;
@@ -5063,10 +5144,9 @@
 
     function openDailyWheelModal(defaultTab = null) {
       ensureStateDefaults();
-      if (defaultTab) {
-        activeDWTab = defaultTab;
-        document.querySelectorAll('[data-dw-tab]').forEach(t => t.classList.toggle('active', t.dataset.dwTab === activeDWTab));
-      }
+      if (defaultTab) activeDWTab = defaultTab;
+      if (activeDWTab !== 'streak' && activeDWTab !== 'wheel') activeDWTab = 'streak';
+      document.querySelectorAll('[data-dw-tab]').forEach(t => t.classList.toggle('active', t.dataset.dwTab === activeDWTab));
       renderDailyWheelModal();
       document.getElementById('modal-daily-wheel').classList.add('open');
     }
@@ -5153,7 +5233,13 @@
 
     // Orders & Daily Quests Modal
     let activeOrdersTab = 'orders';
-    function openOrdersModal() { ensureStateDefaults(); renderOrdersModal(); document.getElementById('modal-orders').classList.add('open'); }
+    function openOrdersModal() {
+      ensureStateDefaults();
+      if (activeOrdersTab !== 'orders' && activeOrdersTab !== 'quests') activeOrdersTab = 'orders';
+      document.querySelectorAll('[data-orders-tab]').forEach(t => t.classList.toggle('active', t.dataset.ordersTab === activeOrdersTab));
+      renderOrdersModal();
+      document.getElementById('modal-orders').classList.add('open');
+    }
     function isOrderFulfillable(ord) { return ord.reqs.every(req => (GameState.barn[req.itemId] || 0) >= req.qty); }
 
     function countReadyOrdersAndQuests() {
@@ -5241,6 +5327,7 @@
     // Roadside Market Stall Modal
     let activeStallSlotIdx = null;
     function openStallModal() {
+      ensureStateDefaults();
       activeStallSlotIdx = null;
       document.getElementById('stall-picker').style.display = 'none';
       renderStallGrid();
@@ -5360,6 +5447,9 @@
     // Farmhouse Kitchen, Skills & Info Modal
     let activeHouseTab = 'kitchen';
     function openHouseModal() {
+      ensureStateDefaults();
+      if (!['kitchen', 'skills', 'info'].includes(activeHouseTab)) activeHouseTab = 'kitchen';
+      document.querySelectorAll('[data-house-tab]').forEach(t => t.classList.toggle('active', t.dataset.houseTab === activeHouseTab));
       renderHouseModal();
       document.getElementById('modal-house').classList.add('open');
     }
@@ -6926,7 +7016,13 @@
     }
 
     let activeShopCat = 'seeds';
-    function openShopModal() { renderShopGrid(); document.getElementById('modal-shop').classList.add('open'); }
+    function openShopModal() {
+      ensureStateDefaults();
+      if (!['seeds', 'plows', 'animals', 'machines', 'decor', 'dinars'].includes(activeShopCat)) activeShopCat = 'seeds';
+      document.querySelectorAll('[data-shop-cat]').forEach(t => t.classList.toggle('active', t.dataset.shopCat === activeShopCat));
+      renderShopGrid();
+      document.getElementById('modal-shop').classList.add('open');
+    }
 
     function renderShopGrid() {
       const grid = document.getElementById('shop-grid');
@@ -6947,17 +7043,17 @@
           card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; gap:4px; flex-wrap:wrap;">
               <h4 class="item-name">${tool.name}</h4>${statusBadge}
             </div>
-            <div class="item-meta tabular">المساحة: ${tool.area}×${tool.area} | تكلفة الحرث: ${tool.plowCost} ذهب | +${tool.xpGain} XP<br/>${tool.desc}</div>`;
+            <div class="item-meta tabular">المساحة: ${tool.area}×${tool.area} | الحرث: ${tool.plowCost} ذهب | +${tool.xpGain} XP<br/>${tool.desc}</div>`;
           card.prepend(prev);
           if (owned) {
-            const btn = makeBtn(equipped ? 'استخدام للحراثة الآن 🚜' : 'تجهيز واستخدام الأداة', equipped ? 'btn-gold' : 'btn-action', () => {
+            const btn = makeBtn(equipped ? 'استخدام الآن 🚜' : 'تجهيز الأداة', equipped ? 'btn-gold' : 'btn-action', () => {
               GameState.equippedPlow = tool.id;
               SFX.tap(); saveGame(); setTool('plow'); closeModal('modal-shop');
               showToast(`تم تجهيز ${tool.name} — اسحب إصبعك على الأرض للحراثة!`, 'success');
             });
             card.appendChild(btn);
           } else {
-            const btn = makeBtn(lockedByLevel ? `يفتح عند المستوى ${tool.minLevel}` : `شراء وتجهيز (${tool.price} ذهب)`, 'btn-action', () => {
+            const btn = makeBtn(lockedByLevel ? `مستوى ${tool.minLevel} 🔒` : `شراء (${tool.price} ذهب)`, 'btn-action', () => {
               if (lockedByLevel) { SFX.error(); showToast(`يتطلب المستوى ${tool.minLevel}`, 'warn'); return; }
               if (GameState.coins < tool.price) { SFX.error(); showToast('عملاتك الذهبية غير كافية!', 'warn'); return; }
               GameState.coins -= tool.price;
@@ -7001,7 +7097,7 @@
             }));
           } else {
             const earlyCost = crop.earlyUnlockCoins || (crop.unlockLevel * 120);
-            const btn = makeBtn(`🔓 فتح مبكر بالمال (${earlyCost.toLocaleString('en-US')} ذهب)`, 'btn-gold', () => {
+            const btn = makeBtn(`🔓 فتح (${earlyCost.toLocaleString('en-US')} ذهب)`, 'btn-gold', () => {
               if (GameState.coins < earlyCost) { SFX.error(); showToast(`تحتاج ${earlyCost.toLocaleString('en-US')} ذهب لفتح ${crop.name} مبكراً`, 'warn'); return; }
               GameState.coins -= earlyCost;
               if (!Array.isArray(GameState.unlockedCrops)) GameState.unlockedCrops = [];
@@ -7089,7 +7185,7 @@
           </div>
           <div class="item-meta">${item.desc}</div>`;
         card.prepend(prev);
-        const btnLabel = lockedByLevel ? `يفتح عند المستوى ${item.minLevel}` : `شراء (${item.price} ذهب)`;
+        const btnLabel = lockedByLevel ? `مستوى ${item.minLevel} 🔒` : `شراء (${item.price} ذهب)`;
         const btn = makeBtn(btnLabel, 'btn-action', () => {
           if (lockedByLevel) { SFX.error(); showToast(`يتطلب المستوى ${item.minLevel}`, 'warn'); return; }
           if (GameState.coins < item.price) { SFX.error(); showToast('لا توجد عملات كافية!', 'warn'); return; }
@@ -7101,7 +7197,7 @@
       }
     }
 
-    function openBarnModal() { renderBarnGrid(); document.getElementById('modal-barn').classList.add('open'); }
+    function openBarnModal() { ensureStateDefaults(); renderBarnGrid(); document.getElementById('modal-barn').classList.add('open'); }
     function renderBarnGrid() {
       const cap = getMaxBarnCapacity();
       document.getElementById('barn-capacity-label').textContent = cap === Infinity ? `${getBarnUsed()} / غير محدود (∞)` : `${getBarnUsed()} / ${cap}`;
@@ -7155,7 +7251,14 @@
     // Multi-Pack Sprite Inspector
     let activeInspPack = 'pack1';
     let activeInspTab = 'mapped', reassignEntityKey = null;
-    function openInspectorModal() { renderInspector(); document.getElementById('modal-inspector').classList.add('open'); }
+    function openInspectorModal() {
+      if (!['pack1', 'pack2', 'pack3'].includes(activeInspPack)) activeInspPack = 'pack1';
+      if (!['mapped', 'extracted', 'sheet'].includes(activeInspTab)) activeInspTab = 'mapped';
+      document.querySelectorAll('[data-insp-pack]').forEach(t => t.classList.toggle('active', t.dataset.inspPack === activeInspPack));
+      syncInspTabs();
+      renderInspector();
+      document.getElementById('modal-inspector').classList.add('open');
+    }
     function renderInspector() {
       const pack = SpriteEngine.packs[activeInspPack];
       const extracted = pack.extracted || [];
@@ -7429,26 +7532,76 @@
     };
 
     function showMenuMainList() {
-      activeMenuCat = null;
-      activeMenuSubTab = null;
       if (menuMainListEl) menuMainListEl.style.display = 'flex';
       if (menuSubpanelEl) menuSubpanelEl.classList.remove('active');
     }
 
     function openMenuCategory(catKey) {
-      const cat = MENU_CATEGORIES[catKey];
-      if (!cat) return;
-      activeMenuCat = catKey;
-      activeMenuSubTab = cat.tabs[0]?.id || null;
+      ensureStateDefaults();
       toggleHamburgerMenu(false);
+      const safeKey = MENU_CATEGORIES[catKey] ? catKey : 'main';
+      const cat = MENU_CATEGORIES[safeKey];
+      if (!cat) return;
+      activeMenuCat = safeKey;
+      activeMenuSubTab = cat.tabs[0]?.id || null;
       renderMenuCategoryModal();
       const modalEl = document.getElementById('modal-menu-section');
       if (modalEl) modalEl.classList.add('open');
     }
 
+    function getMenuTabLiveSummary(tabId) {
+      ensureStateDefaults();
+      switch (tabId) {
+        case 'shop':
+          return `الذهب: ${GameState.coins.toLocaleString('en-US')} · الدنانير: ${GameState.dinars} 💎 · البذور المفتوحة: ${Object.values(CROPS).filter(c => isCropUnlocked(c)).length}/${Object.keys(CROPS).length}`;
+        case 'barn': {
+          const topItems = Object.entries(GameState.barn || {}).filter(([, q]) => q > 0).slice(0, 3)
+            .map(([id, q]) => `${PRODUCTS[id]?.name || id} (${q})`).join(' · ');
+          return topItems ? `المخزون: ${topItems}` : 'الحظيرة فارغة حالياً — ازرع واحصد لملئها.';
+        }
+        case 'move':
+          return `الوضع الحالي: ${activeTool === 'move' ? 'وضع النقل مفعل — اضغط على أي عنصر لنقله' : 'جاهز للنقل بدون خسارة التقدم'}`;
+        case 'expand':
+          return `المساحة الحالية: ${GameState.unlockedSize}×${GameState.unlockedSize} (${GameState.unlockedSize * GameState.unlockedSize} مربعاً) · المستوى ${GameState.level}`;
+        case 'orders':
+          return `الطلبات الجاهزة للتسليم: ${countReadyOrdersAndQuests()} · إجمالي الطلبات: ${(GameState.orders || []).length}`;
+        case 'truck': {
+          const filled = (GameState.truck?.crates || []).filter(c => c.filled).length;
+          return `الصناديق المعبأة: ${filled}/3 · المكافأة: +${GameState.truck?.rewardCoins || 0} ذهب و +${GameState.truck?.rewardDinars || 1} 💎`;
+        }
+        case 'stall':
+          return `مبيعات جاهزة للجمع: ${countSoldStallSlots()} · خانات الكشك: ${(GameState.stallSlots || []).length}`;
+        case 'festival':
+          return `منتجات ×2: ${(GameState.festival?.hotItems || []).map(id => PRODUCTS[id]?.name || id).join(' · ')}`;
+        case 'profile':
+          return `${GameState.profile?.avatar || '👨‍🌾'} ${GameState.profile?.farmName || 'مزرعة السعادة'} · ${GameState.profile?.farmerCode || 'HF-FARM1'} · طلبات: ${getTotalPendingFriendReqs()}`;
+        case 'neighbors':
+          return `الأصدقاء المقبولون: ${getAcceptedFriends().length} · نقاط التعاونية: ${GameState.coopPoints || 0} 🤝`;
+        case 'bank':
+          return `الودائع الناضجة: ${countMaturedDeposits()} · البورصة (+50%): ${(GameState.marketSurge?.items || []).map(id => PRODUCTS[id]?.name || id).join(' و ')}`;
+        case 'skills':
+          return `نجوم المهارة المتاحة: ${GameState.xpStars || 0} ⭐ · سعة الحظيرة: ${formatBarnCap(getMaxBarnCapacity())}`;
+        case 'ach_wheel':
+          return `جوائز متاحة: ${countReadyAchievements()} · مكافآت يومية متاحة: ${countDailyWheelReady()}`;
+        case 'inspector':
+          return `الحزم المحملة: ${Object.values(SpriteEngine.packs).filter(p => p.sprites && p.sprites.length > 0).length}/3 · محمي برمز PIN`;
+        case 'audio_display':
+          return `الصوت: ${SFX.muted ? 'صامت 🔇' : 'مفعل 🔊'} · السحب السريع: ${brushMode ? 'مفعل' : 'متوقف'}`;
+        case 'backup_vip':
+          return `حفظ محلي متاح · التصدير والاستيراد بصيغة JSON وصندوق VIP`;
+        default:
+          return '';
+      }
+    }
+
     function renderMenuCategoryModal() {
+      ensureStateDefaults();
+      if (!activeMenuCat || !MENU_CATEGORIES[activeMenuCat]) activeMenuCat = 'main';
       const cat = MENU_CATEGORIES[activeMenuCat];
       if (!cat) return;
+      if (!activeMenuSubTab || !cat.tabs.some(t => t.id === activeMenuSubTab)) {
+        activeMenuSubTab = cat.tabs[0]?.id || null;
+      }
       const titleEl = document.getElementById('menu-modal-title');
       const tabsEl = document.getElementById('menu-modal-tabs');
       const bodyEl = document.getElementById('menu-modal-body');
@@ -7477,12 +7630,14 @@
       card.className = 'order-card';
       const badgeText = typeof cur.badge === 'function' ? cur.badge() : '';
       const descText = typeof cur.desc === 'function' ? cur.desc() : '';
+      const liveSummary = getMenuTabLiveSummary(cur.id);
       const btnText = typeof cur.btnLabel === 'function' ? cur.btnLabel() : cur.btnLabel;
-      card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-          <strong style="font-size:15px; color:var(--ink-primary);">${cur.icon} ${cur.label}</strong>
+      card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
+          <strong style="font-size:13px; color:var(--ink-primary);">${cur.icon} ${cur.label}</strong>
           ${badgeText ? `<span class="menu-sub-pill ok tabular">${badgeText}</span>` : ''}
         </div>
-        <div style="font-size:12.5px; color:var(--ink-muted); line-height:1.6;">${descText}</div>`;
+        <div style="font-size:11px; color:var(--ink-muted); line-height:1.45;">${descText}</div>
+        ${liveSummary ? `<div class="tabular" style="font-size:11px; font-weight:800; color:#14532d; background:#dcfce7; border:1px solid #86efac; border-radius:8px; padding:4px 8px; line-height:1.4;">${liveSummary}</div>` : ''}`;
       const actionBtn = makeBtn(btnText, 'btn-action', () => {
         SFX.tap();
         closeModal('modal-menu-section');
@@ -7494,16 +7649,20 @@
 
       if (cat.tabs.length > 1) {
         const quickGrid = document.createElement('div');
-        quickGrid.style.cssText = 'display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:8px;';
+        quickGrid.className = 'items-grid';
         for (const tab of cat.tabs) {
           const itemCard = document.createElement('div');
           itemCard.className = 'item-card';
-          itemCard.style.cssText = `padding:9px; gap:6px; ${tab.id === cur.id ? 'border-color:#16a34a; box-shadow:0 0 0 2px rgba(22,163,74,0.2);' : ''}`;
+          if (tab.id === cur.id) {
+            itemCard.style.cssText = 'border-color:#16a34a; box-shadow:0 0 0 2px rgba(22,163,74,0.2);';
+          }
           const tBadge = typeof tab.badge === 'function' ? tab.badge() : '';
-          itemCard.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
-              <strong style="font-size:12px;">${tab.icon} ${tab.label}</strong>
+          const tSummary = getMenuTabLiveSummary(tab.id);
+          itemCard.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; gap:4px; flex-wrap:wrap;">
+              <strong class="item-name">${tab.icon} ${tab.label}</strong>
               ${tBadge ? `<span class="menu-sub-pill tabular">${tBadge}</span>` : ''}
-            </div>`;
+            </div>
+            <div class="item-meta tabular">${tSummary}</div>`;
           const launchBtn = makeBtn('فتح', tab.id === cur.id ? 'btn-action' : 'btn-secondary', () => {
             SFX.tap();
             closeModal('modal-menu-section');
