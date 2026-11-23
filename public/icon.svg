@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="55%" stop-color="#bae6fd"/>
+      <stop offset="100%" stop-color="#fef3c7"/>
+    </linearGradient>
+    <linearGradient id="meadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="50%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" fill="url(#sky)"/>
+  <circle cx="386" cy="116" r="54" fill="url(#sun)"/>
+  <ellipse cx="256" cy="440" rx="340" ry="155" fill="url(#meadow)"/>
+  <path d="M126 276 L256 154 L386 276 V406 H126 Z" fill="#dc2626" stroke="#5c280b" stroke-width="14" stroke-linejoin="round"/>
+  <path d="M98 282 L256 134 L414 282" fill="none" stroke="#7c2d12" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M108 278 L256 140 L404 278" fill="none" stroke="#facc15" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="200" y="292" width="112" height="114" rx="10" fill="#fef3c7" stroke="#5c280b" stroke-width="10"/>
+  <path d="M204 296 L308 402 M308 296 L204 402" stroke="#92400e" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="256" cy="224" r="24" fill="#fef08a" stroke="#78350f" stroke-width="8"/>
+  <path d="M74 410 H438" stroke="#15803d" stroke-width="18" stroke-linecap="round"/>
+</svg>

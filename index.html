@@ -13,8 +13,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="المزرعة" />
-  <link id="apple-touch-icon-link" rel="apple-touch-icon" href="" />
-  <link id="manifest-link" rel="manifest" href="" />
+  <link id="apple-touch-icon-link" rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -8320,69 +8321,50 @@
     });
 
     /* ============================================================
-       15. PWA MANIFEST, ICONS, SERVICE WORKER & INSTALL PROMPT
+       15. PWA INSTALL PROMPT & OFFLINE CONNECTIVITY
        ============================================================ */
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const btn = document.getElementById('btn-install-pwa');
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      if (btn && !isStandalone) btn.style.display = 'inline-flex';
+    });
+
     let pwaInitialized = false;
     function initPWA() {
       if (pwaInitialized) return;
       pwaInitialized = true;
-      const makeIconDataURL = (size) => {
-        const c = document.createElement('canvas'); c.width = size; c.height = size;
-        const g = c.getContext('2d');
-        const grad = g.createLinearGradient(0, 0, size, size);
-        grad.addColorStop(0, '#16a34a'); grad.addColorStop(1, '#14532d');
-        g.fillStyle = grad; g.fillRect(0, 0, size, size);
-        const houseSp = SpriteEngine.getSprite('house');
-        if (houseSp) {
-          const pad = size * 0.14, avail = size - pad * 2;
-          const s = Math.min(avail / houseSp.width, avail / houseSp.height);
-          g.drawImage(houseSp, (size - houseSp.width * s) / 2, (size - houseSp.height * s) / 2, houseSp.width * s, houseSp.height * s);
-        }
-        return c.toDataURL('image/png');
-      };
-
-      const icon192 = makeIconDataURL(192), icon512 = makeIconDataURL(512);
-      document.getElementById('apple-touch-icon-link').href = icon192;
-      const manifestObj = {
-        id: '/', name: 'المزرعة السعيدة - Happy Farm', short_name: 'المزرعة',
-        description: 'لعبة مزرعة أيزومترية تفاعلية تعمل دون إنترنت.',
-        start_url: '/', scope: '/', display: 'standalone', dir: 'rtl', lang: 'ar',
-        theme_color: '#2d6a2e', background_color: '#88cde8',
-        icons: [
-          { src: icon192, sizes: '192x192', type: 'image/png', purpose: 'any' },
-          { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any' },
-          { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'maskable' }
-        ]
-      };
-      document.getElementById('manifest-link').href = URL.createObjectURL(new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' }));
-
-      if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      }
 
       const updateOnline = () => document.getElementById('offline-banner').classList.toggle('visible', !navigator.onLine);
-      window.addEventListener('online', updateOnline); window.addEventListener('offline', updateOnline); updateOnline();
+      window.addEventListener('online', updateOnline);
+      window.addEventListener('offline', updateOnline);
+      updateOnline();
 
       const installBtn = document.getElementById('btn-install-pwa');
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
       const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      let deferredPrompt = null;
-      if (!isStandalone) {
+      if (!isStandalone && installBtn) {
         if (isIOS) {
           installBtn.style.display = 'inline-flex';
           installBtn.onclick = () => document.getElementById('modal-ios-install').classList.add('open');
-        }
-        window.addEventListener('beforeinstallprompt', (e) => {
-          e.preventDefault(); deferredPrompt = e;
-          installBtn.style.display = 'inline-flex';
+        } else {
+          if (deferredInstallPrompt) installBtn.style.display = 'inline-flex';
           installBtn.onclick = async () => {
-            if (!deferredPrompt) return;
-            await deferredPrompt.prompt();
-            const choice = await deferredPrompt.userChoice;
-            if (choice.outcome === 'accepted') { installBtn.style.display = 'none'; deferredPrompt = null; }
+            if (!deferredInstallPrompt) return;
+            await deferredInstallPrompt.prompt();
+            const choice = await deferredInstallPrompt.userChoice;
+            if (choice.outcome === 'accepted') {
+              installBtn.style.display = 'none';
+              deferredInstallPrompt = null;
+            }
           };
+        }
+        window.addEventListener('appinstalled', () => {
+          installBtn.style.display = 'none';
+          deferredInstallPrompt = null;
         });
-        window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; deferredPrompt = null; });
       }
     }
 
