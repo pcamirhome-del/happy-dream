@@ -508,6 +508,17 @@
     }
     .menu-cat-btn:hover { filter: brightness(1.06); }
     .menu-cat-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #3f210b; }
+    .menu-cat-btn.open { filter: brightness(1.08); border-color: #fde047; }
+    .menu-sub-list {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px 6px 6px;
+      background: #f5e6c8;
+      border: 1.5px solid #c9a26d;
+      border-radius: 10px;
+    }
+    .menu-sub-list.open { display: flex; }
     .menu-subpanel {
       display: none;
       flex-direction: column;
@@ -1645,18 +1656,25 @@
         <span>🌾 1. الأساسي (المتجر والحظيرة والأرض)</span>
         <span class="menu-sub-pill tabular" id="cat-badge-main">6×6</span>
       </button>
+      <div id="menu-sublist-main" class="menu-sub-list" style="display:none;"></div>
+
       <button class="menu-cat-btn" data-menu-cat="trade" type="button">
         <span>🚛 2. التجارة والطلبات والشاحنة</span>
         <span class="menu-sub-pill alert tabular" id="cat-badge-trade" style="display:none;">0</span>
       </button>
+      <div id="menu-sublist-trade" class="menu-sub-list" style="display:none;"></div>
+
       <button class="menu-cat-btn" data-menu-cat="social" type="button">
         <span>🤝 3. الاجتماعيات والبنك والتطوير</span>
         <span class="menu-sub-pill alert tabular" id="cat-badge-social" style="display:none;">0</span>
       </button>
+      <div id="menu-sublist-social" class="menu-sub-list" style="display:none;"></div>
+
       <button class="menu-cat-btn" data-menu-cat="settings" type="button">
         <span>⚙️ 4. الإعدادات والرسومات والنسخ</span>
         <span class="menu-sub-pill" id="cat-badge-settings">PIN</span>
       </button>
+      <div id="menu-sublist-settings" class="menu-sub-list" style="display:none;"></div>
     </div>
 
     <div id="menu-subpanel" class="menu-subpanel">
@@ -7532,21 +7550,55 @@
     };
 
     function showMenuMainList() {
+      activeMenuCat = null;
+      activeMenuSubTab = null;
       if (menuMainListEl) menuMainListEl.style.display = 'flex';
       if (menuSubpanelEl) menuSubpanelEl.classList.remove('active');
+      Object.keys(MENU_CATEGORIES).forEach((key) => {
+        const listEl = document.getElementById(`menu-sublist-${key}`);
+        if (listEl) {
+          listEl.classList.remove('open');
+          listEl.style.display = 'none';
+        }
+        const catBtn = document.querySelector(`.menu-cat-btn[data-menu-cat="${key}"]`);
+        if (catBtn) catBtn.classList.remove('open');
+      });
+    }
+
+    function renderMenuAccordion() {
+      ensureStateDefaults();
+      Object.keys(MENU_CATEGORIES).forEach((key) => {
+        const listEl = document.getElementById(`menu-sublist-${key}`);
+        const catBtn = document.querySelector(`.menu-cat-btn[data-menu-cat="${key}"]`);
+        const isOpen = activeMenuCat === key;
+        if (catBtn) catBtn.classList.toggle('open', isOpen);
+        if (!listEl) return;
+        listEl.classList.toggle('open', isOpen);
+        listEl.style.display = isOpen ? 'flex' : 'none';
+        if (!isOpen) return;
+        listEl.innerHTML = '';
+        const cat = MENU_CATEGORIES[key];
+        for (const tab of cat.tabs) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'menu-sub-btn';
+          const badgeVal = typeof tab.badge === 'function' ? tab.badge() : '';
+          btn.innerHTML = `<span>${tab.icon} ${tab.label}</span>${badgeVal ? `<span class="menu-sub-pill tabular">${badgeVal}</span>` : ''}`;
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            SFX.tap();
+            toggleHamburgerMenu(false);
+            tab.run();
+          });
+          listEl.appendChild(btn);
+        }
+      });
     }
 
     function openMenuCategory(catKey) {
-      ensureStateDefaults();
-      toggleHamburgerMenu(false);
-      const safeKey = MENU_CATEGORIES[catKey] ? catKey : 'main';
-      const cat = MENU_CATEGORIES[safeKey];
-      if (!cat) return;
-      activeMenuCat = safeKey;
-      activeMenuSubTab = cat.tabs[0]?.id || null;
-      renderMenuCategoryModal();
-      const modalEl = document.getElementById('modal-menu-section');
-      if (modalEl) modalEl.classList.add('open');
+      if (!MENU_CATEGORIES[catKey]) return;
+      activeMenuCat = activeMenuCat === catKey ? null : catKey;
+      renderMenuAccordion();
     }
 
     function getMenuTabLiveSummary(tabId) {
